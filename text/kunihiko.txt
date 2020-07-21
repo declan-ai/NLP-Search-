@@ -1,0 +1,22 @@
+Kunihiko Fukushima
+From Wikipedia, the free encyclopedia
+Jump to navigationJump to search
+Kunihiko Fukushima
+Born	Japan
+Citizenship	Japan
+Alma mater	Kyoto University
+Known for	Artificial neural networks, Neocognitron, Convolutional neural network architecture, Unsupervised learning, Deep learning
+Awards	IEICE Achievement Award and Excellent Paper Awards, IEEE Neural Networks Pioneer Award, APNNA Outstanding Achievement Award, JNNS Excellent Paper Award, INNS Helmholtz Award, Bower Award and Prize for Achievement in Science
+Scientific career
+Fields	Computer science
+Institutions	Fuzzy Logic Systems Institute
+Kunihiko Fukushima (Japanese: ?? ??) is a Japanese computer scientist, most noted for his work on artificial neural networks and deep learning. He is currently working part-time as a Senior Research Scientist at the Fuzzy Logic Systems Institute in Tokyo.[1]
+
+In 1980, Fukushima published the neocognitron,[2][3] the original deep convolutional neural network (CNN) architecture.[4][5] Fukushima proposed several supervised and unsupervised learning algorithms to train the parameters of a deep neocognitron such that it could learn internal representations of incoming data.[3][6] Today, however, the CNN architecture is usually trained through backpropagation. This approach is now heavily used in computer vision.[5][7]
+
+In 1958, Fukushima received his Bachelor of Engineering in electronics from Kyoto University.[1] He became a Senior Research Scientist at the NHK Science & Technology Research Laboratories. In 1989, he joined the faculty of Osaka University.[1] In 1999, he joined the faculty of the University of Electro-Communications. In 2001, he joined the faculty of Tokyo University of Technology. From 2006 to 2010, he was a visiting professor at Kansai University.[1]
+
+Fukushima acted as founding President of the Japanese Neural Network Society (JNNS). He also was a founding member on the Board of Governors of the International Neural Network Society (INNS), and President of the Asia-Pacific Neural Network Assembly (APNNA).[1]
+
+Awards
+In 2020 Fukushima received the Bower Award and Prize for Achievement in Science[8]. He also received the IEICE Achievement Award and Excellent Paper Awards, the IEEE Neural Networks Pioneer Award, the APNNA Outstanding Achievement Award, the JNNS Excellent Paper Award and the INNS Helmholtz Award

@@ -1,0 +1,70 @@
+Satoshi Nakamoto
+By WILL KENTON
+ Updated May 22, 2020
+Who Is Satoshi Nakamoto?
+Satoshi Nakamoto is the name used by the creator/s of the protocol used in the Bitcoin cryptocurrency.
+
+
+Though the name Satoshi Nakamoto is nearly synonymous with Bitcoin, the physical person that name represents has never been found, leading many people to believe that it is a pseudonym for a different person or group of people.
+
+
+ Satoshi Nakamoto may not be a real person! The name might be a pseudonym for the creator or creators of Bitcoin who wish to remain anonymous.
+Satoshi Nakamoto in Context
+Satoshi Nakamoto is considered the most enigmatic character in cryptocurrency. To date, it is unclear if the name refers to a single person or a group of people. What is known is that Satoshi Nakamoto published a paper in 2008 that jumpstarted the development of cryptocurrency.
+
+
+The paper, Bitcoin: A Peer-to-Peer Electronic Cash System, described the use of a peer-to-peer network as a solution to the problem of double-spending. The problem – that a digital currency or token could be duplicated in multiple transactions – is not found in physical currencies since a physical bill or coin can, by its nature, only exist in one place at a single time. Since a digital currency does not exist in physical space, using it in a transaction does not necessarily remove it from someone’s possession.
+
+KEY TAKEAWAYS
+Satoshi Nakamoto is the name on the original Bitcoin whitepaper and is the identity credited with inventing Bitcoin.
+It's likely that Satoshi Nakamoto is a pseudonym for a different person or persons who invented Bitcoin.
+Solutions to combating the double-spend problem had historically involved the use of trusted, third-party intermediaries that would verify whether a digital currency had already been spent by its holder. In most cases, third parties, such as banks, can effectively handle transactions without adding significant risk.
+
+However, this trust-based model still results in fraud risk if the trusted third party can't be trusted. Removing the third-party could only be accomplished by building cryptography into transactions.
+
+
+Nakamoto proposed a decentralized approach to transactions, ultimately culminating in the creation of blockchains. In a blockchain, timestamps for a transaction are added to the end of previous timestamps based on proof-of-work, creating a historical record that cannot be changed.
+
+
+Because the record of transactions is distributed across many nodes in the system, it is difficult if not impossible for a bad actor to gain enough control of the system to rewrite the ledger to their own advantage. The blockchain records are kept secure because the amount of computational power required to reverse them discourages small scale attacks.
+
+Satoshi Nakamoto History
+The persona Satoshi Nakamoto was involved in the early days of bitcoin, working on the first version of the software in 2009. Communication to and from Nakamoto was conducted electronically, and the lack of personal and background details meant that it was impossible to find out the actual identity behind the name.
+
+Nakamoto’s involvement with bitcoin ended in 2010. The last correspondence anyone had with Nakamoto was in an email to another bitcoin developer saying that they had "moved on to other things."
+
+Possible Candidates for the Real-Life Nakamoto
+The inability to put a face to the name has led to significant speculation as to Nakamoto’s identity, especially as cryptocurrencies increased in number, popularity, and notoriety.
+
+While the identity of Nakamoto has not been ascribed to a provable person or persons, it is estimated that the value of bitcoins under Nakamoto's control -- which is thought to be about 1 million -- may exceed $5 billion in value. Given that the maximum possible number of bitcoins generated is 21 million, Nakamoto's stake of 5% of the total bitcoin holdings has considerable market power.
+
+Several people have been put forward as the "real" Satoshi Nakamoto, though none have been definitely proven to be Nakamoto.
+
+Dorian Nakamoto
+Dorian Nakamoto is an academic and engineer in California who was named as the creator of Bitcoin by Leah McGrath Goodman in a Newsweek article in March of 2014. McGrath's article says, "the trail followed by Newsweek led to a 64-year-old Japanese-American man whose name really is Satoshi Nakamoto," but subsequent investigation ruled Nakamoto out of the running.
+
+Hal Finney
+Bitcoin is the product of the cypherpunk movement, and one of the pillars of that movement was Hal Finney who died in 2014. Finney was active in the Bitcoin community before and after its launch, and Finney is the first person to receive Bitcoin in a transaction. He also coincidentally lived a few blocks from Dorian Nakamoto who, it has been surmised, might have been the inspiration for a pseudonym invented by Finney.
+
+Nick Szabo
+Like Finney, Szabo was an early cypherpunk, and was friends with many people in that circle. In 2005 he wrote a blog post hypothesizing a digital currency called "Bitgold" that would not depend on the trust of third parties.
+
+Craig Wright
+One of the more colorful characters to be nominated as the person behind Satoshi Nakamoto is Craig Wright, an Australian academic and businessman. Two articles in Wired and Gizmodo suggested that Wright might be the person behind Bitcoin, but subsequent investigations have concluded that he had perpetrated an elaborate hoax. He still claims, however, to be the man behind the coin.
+
+Satoshi's Bitcoin
+Analysis of Bitcoin's blockchain has helped to deduce which addresses are likely Satoshi Nakamoto's to a relatively high degree of certainty. According to chain analysis from Sergio Demián Lerner, the chief scientist of RSK Labs, Satoshi has between 700,000 and 1 million Bitcoin. These addresses date all the way back to the beginning of Bitcoin in 2009. Over the years, Bitcoin from some very early addresses has been moved, leading many to speculate whether or not this was Satoshi each time, even though there were some other miners active. Thus far, this analysis has shown that each of these transactions has most likely not been from Satoshi addresses and that his Bitcoin is still dormant.
+
+Most recently, on May 21st, 2020, a twitter account that monitors various blockchains and reports large transactions, called @whale_alert tweeted this:
+
+"40 #BTC (391,055 USD) transferred from possible #Satoshi owned wallet (dormant since 2009) to unknown wallet.
+The coins in this transaction were mined in the first month of Bitcoin's existence."
+
+This immediately caused a ripple across Twitter. The @Bitcoin Twitter handle tweeted a poll asking if twitter users were bullish, neutral, or bearish on the news that this could have been Satoshi. At first, bearish had the lead. A day later, 34% of those who answered said it was bullish, 35.6% said it was neutral, and 30% said it was bearish. Even though indicators on the blockchain pointed to this being someone other than Satoshi, many twitter users seemed to assume that it was and began to fear if Satoshi was dumping his Bitcoin holdings. Fear and uncertainty seemed to fill up the comment section with some asking if they should sell and others saying that they would sell right away.
+
+While others tried to chime in and explain that these addresses were likely not Satoshi and that, even if it were, he, she, or they could have been moving to another address rather than to an exchange to sell. Many also asked why it even matters if Satoshi wants to move Bitcoin or sell it as Bitcoin is decentralized and one person's actions, whether it is Satoshi or not, should not be relevant.
+
+Regardless, Bitcoin's price immediately dropped 4% after this news came out, highlighting once again just how volatile these markets are and how easily news, even if unproven or untrue, can swing a market. It also showed that, even though Bitcoin is decentralized, with no sole leader or control point, the community is still so obsessed with its creator/s that this one person or person's movements can have some level of control over the system.
+
+Compete Risk Free with $100,000 in Virtual Cash
+Put your trading skills to the test with our FREE Stock Simulator. Compete with thousands of Investopedia traders and trade your way to the top! Submit trades in a virtual environment before you start risking your own money. Practice trading strategies so that when you're ready to enter the real market, you've had the practice you need. Try our Stock Simulator today 

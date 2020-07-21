@@ -1,0 +1,25 @@
+What is Blockchain Technology?
+Blockchain technology allows consumers and suppliers to connect directly, removing the need for a third party. It provides a decentralised database or digital ledger of transactions that everyone on the network can see. Or we can say it is a simple way of transaction. Let us study through this article about blockchain technology, where it is used, who invented blockchain technology, what are its advantages and disadvantages, is it safe to use etc.
+Blockchain technology is associated with cryptocurrencies like bitcoin and others.
+
+Have you ever imagined a world where there is not necessary to validate any sale or purchase with no receipts, no bank documents and no need of registering or disposal of property with the concerned government department?
+We know that buying or selling of any property is put in a record. Before taking a commercial decision we always want that all the information should be available at one place. This is possible only when a technology of code writing in financial system circles all over the world. Isn't it. And this developed the root for Blockchain Technology.
+While doing any transaction the main problem is about trust. Can one trust another party? This made a need for legally binding stamps and seals and to maintain records.
+
+Several centuries ago, when populations and commerce were both a tiny fraction of what they are now, some communities maintained a ledger of all financial transactions, which was open to public scrutiny and anything mentioned in the ledger acquired the status of truth.
+
+Gradually do you know what happened, these records become voluminous and to keep them or to maintain them was very difficult. And so it became the function of government departments and banks and was no longer freely available to the public.
+
+Let us study through this article about pros and cons of Blockchain technology.
+
+What is Blockchain Technology?
+
+A Microsoft Excel Sheet file in your computer or laptop with the details of some of your transactions is known as a ledger.
+
+If your Excel file is copied to hundreds of your friend's computers and connected to each other forming a network is known as distributed ledger. And if there will be a technology to update this Excel sheet whenever you or your friends update a ledger.
+
+Therefore, blockchain is nothing but a digital ledger. That is a book containing accounts to which debits and credits are posted from books of original entry.
+
+A blockchain is an anonymous online ledger that uses a data structure to simplify the way we transact. Without the help of third party blockchain allows users to manipulate the ledger in a secure way.
+
+It protects the identities of the users. This way blockchain is a more secure way to carry out transactions. Each list of records in a blockchain is called a block. That is why it is known as blockchain because the various growing list of records i.e. blocks are linked and secured.

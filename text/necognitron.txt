@@ -1,0 +1,27 @@
+Neocognitron
+From Wikipedia, the free encyclopedia
+Jump to navigationJump to search
+The neocognitron is a hierarchical, multilayered artificial neural network proposed by Kunihiko Fukushima in 1979.[1] It has been used for handwritten character recognition and other pattern recognition tasks, and served as the inspiration for convolutional neural networks.[2]
+
+The neocognitron was inspired by the model proposed by Hubel & Wiesel in 1959. They found two types of cells in the visual primary cortex called simple cell and complex cell, and also proposed a cascading model of these two types of cells for use in pattern recognition tasks.[3][4]
+
+The neocognitron is a natural extension of these cascading models. The neocognitron consists of multiple types of cells, the most important of which are called S-cells and C-cells.[5] The local features are extracted by S-cells, and these features' deformation, such as local shifts, are tolerated by C-cells. Local features in the input are integrated gradually and classified in the higher layers.[6] The idea of local feature integration is found in several other models, such as the Convolutional Neural Network model, the SIFT method, and the HoG method.
+
+There are various kinds of neocognitron.[7] For example, some types of neocognitron can detect multiple patterns in the same input by using backward signals to achieve selective attention.[8]
+
+See also
+Artificial neural network
+Deep learning
+Pattern recognition
+Receptive field
+Self-organizing map
+Unsupervised learning
+Notes
+ Fukushima, Kunihiko (October 1979). "???????????????????????????? --- ???????? ---" [Neural network model for a mechanism of pattern recognition unaffected by shift in position — Neocognitron —]. Trans. IECE (in Japanese). J62-A (10): 658–665.
+ LeCun, Yann; Bengio, Yoshua; Hinton, Geoffrey (2015). "Deep learning". Nature. 521 (7553): 436–444. Bibcode:2015Natur.521..436L. doi:10.1038/nature14539. PMID 26017442.
+ David H. Hubel and Torsten N. Wiesel (2005). Brain and visual perception: the story of a 25-year collaboration. Oxford University Press US. p. 106. ISBN 978-0-19-517618-6.
+ Hubel, DH; Wiesel, TN (October 1959). "Receptive fields of single neurones in the cat's striate cortex". J. Physiol. 148 (3): 574–91. doi:10.1113/jphysiol.1959.sp006308. PMC 1363130. PMID 14403679.
+ Fukushima 1987, p. 83.
+ Fukushima 1987, p. 84.
+ Fukushima 2007
+ Fukushima 1987, pp.81, 85

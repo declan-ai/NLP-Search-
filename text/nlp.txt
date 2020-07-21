@@ -1,0 +1,163 @@
+The computational scheme has evolved from basic set of instructions in the form of binary codes to mnemonic instruction codes to programming languages that have prevailed intensively during the later part of twentieth century. Along that evolution came the inspirational research on making the computer understand natural human language and interact with the humans in short applying natural language processing to normal computer usage and beyond.
+Natural language processing can be defined as a theoretical approach enclosing analysis and manipulation of natural language texts usually spoken by humans. This is done at various levels of linguistic analysis in order to attain a ‘human-like’ approach to processing of tasks and other problems.
+
+It must be noted that NLP is not a single defined standard system but a collection of numerous language processing techniques and methods. Also, in view of facilitating the user and standing true to the name, texts must be of natural language usage and not a set of selected texts that could be used for processing. Because, the later approach would certainly forgo the real meaning of natural language processing.
+
+In any NLP system, various levels of linguistic analysis of the text are performed. This is done because humans usually breakup linguistic texts into various levels and then process or understand the language. Human-like approach and processing in the NLP systems are considered as an integral part of AI. The applications of NLP are versatile and are currently being researched and implemented in fields like military science, security systems, virtual reality simulation, medicine and regular computer science and artificial intelligence.
+
+The techniques and approaches that have been used or researched so far form the basic platform of NLP. Some of them are based on classification of natural linguistic phonology, morphology, lexical variations, syntactic, semantic, pragmatic levels. Some of the notable works done in this field are:
+
+Machine Translation – Weaver and Booth (1946)
+
+Syntactic Structures – Chomsky (1957)
+
+Case grammar – Fillmore
+
+Semantic Networks – Quillain
+
+Conceptual Dependency – Schank
+
+Augmented Transition Networks – Woods
+
+Functional Grammar – Kay
+
+Also that there have been famous prototypes developed to highlight the impact of particular techniques and principles. They are:
+
+ELIZA – Weizenbaum
+
+SHRDLU – Winograd
+
+PARRY
+
+LUNAR – Woods
+
+The scope of the article revolves around the evolution of NLP and its implementation in security systems.
+
+Methods:
+Strata of natural language processing:
+The optimal descriptive way of putting forward the actions that are going on in natural language processing system is through the ‘strata of natural language processing. During the early days of natural language processing, it was held that the different data of natural language processing followed a sequential pattern. But current Psycholinguistic researches have revealed that the system follows rather a synchronic pattern. This is because humans use all of the strata of language processing and they don’t follow a sequential pattern. For this reason, in order to achieve high efficiency of NLP system more strata of language processing must be adopted.
+
+This stratum deals with the interpretation of speech sounds within and across words. There
+
+are three types of rules that are typically used:
+
+1) Phonetic rules – for sounds within words
+
+2) Phonemic rules – for variations of pronunciation when words are spoken together
+
+3) Prosodic rules – for fluctuation in stress and intonation across a sentence.
+
+Morphology
+This strata deal with the componential nature of words, which are composed of morphemes – the smallest units of meaning. For example, the word postproduction can be morphologically analyzed into three separate morphemes: the prefix ‘post’, the root ‘product’ and the suffix ‘tion’. Since the meaning of each morpheme remains the same across words, humans break down an unknown word into its constituent morphemes in order to understand its meaning. In the same way, an NLP system recognizes the meaning given by each morpheme in order to achieve and interpret meaning.
+
+Lexical
+Both the humans and NLP systems at this stratum, interpret the meaning of individual words.
+
+Several types of processing contribute to word-level understanding – the first of these being assignment of a single part-of-speech tag to each word. In this processing, words that can function as more than one part-of-speech are assigned the most probable part-of speech tag based on the context in which they occur.
+
+Moreover at the lexical stratum, those words that have only one possible sense or meaning can be replaced by a semantic representation of that meaning. The nature of the representation varies according to the semantic theory utilized in the NLP system. One can notice that, a single lexical unit is split into its more basic properties. If there is a set of semantic primitives used across all words, these simplified lexical representations make it possible to unify meaning across words and to produce complex interpretations, much the same as humans do.
+
+Syntactic
+The concept of analysing the sentence by looking into the grammatical composition of a sentence and its dependency is used here. This needs both grammar and a parser. The output achieved here is a representation of the sentence that gives the structural dependency relationships between the words. The efficiency of a parser depends on the different grammars used. Not all NLP applications require a full parse of sentences, therefore the remaining challenges in parsing of prepositional phrase attachment and conjunction scoping no longer stymie those applications for which phrasal and clausal dependencies are sufficient. Syntax conveys meaning in most languages because order and dependency contribute to meaning. For example the two sentences: ‘I smoked a cigarette.’ and ‘The cigarette smoked me.’ differ only in terms of syntax, but convey contrasting meanings.
+
+Semantic
+This is the strata at which most people think meaning is determined, however, as we can
+
+see in the above defining of the stratum, it is all the levels that contribute to meaning.
+
+Semantic processing determines the possible meanings of a sentence by focusing on the
+
+interactions among word-level meanings in the sentence. This level of processing can
+
+include the semantic disambiguation of words with multiple senses; in an analogous way
+
+to how syntactic disambiguation of words that can function as multiple parts-of-speech is
+
+accomplished at the syntactic level. Semantic disambiguation permits one and only one
+
+sense of polysemous words to be selected and included in the semantic representation of
+
+the sentence. For example, amongst other meanings, ‘file’ as a noun can mean either a
+
+folder for storing papers, or a tool to shape one’s fingernails, or a line of individuals in a
+
+queue. If information from the rest of the sentence were required for the disambiguation,
+
+the semantic, not the lexical level, would do the disambiguation. A wide range of
+
+methods can be implemented to accomplish the disambiguation, some which require
+
+information as to the frequency with which each sense occurs in a particular corpus of
+
+interest, or in general usage, some which require consideration of the local context, and
+
+others which utilize pragmatic knowledge of the domain of the document.
+
+Discourse
+While syntax and semantics work with sentence-length units, the discourse level of NLP
+
+works with units of text longer than a sentence. That is, it does not interpret multisentence
+
+texts as just concatenated sentences, each of which can be interpreted singly.
+
+Rather, discourse focuses on the properties of the text as a whole that convey meaning by
+
+making connections between component sentences. Several types of discourse processing
+
+can occur at this level, two of the most common being anaphora resolution and
+
+discourse/text structure recognition. Anaphora resolution is the replacing of words such
+
+as pronouns, which are semantically vacant, with the appropriate entity to which they
+
+refer (30). Discourse/text structure recognition determines the functions of sentences in
+
+the text, which, in turn, adds to the meaningful representation of the text. For example,
+
+newspaper articles can be deconstructed into discourse components such as: Lead, Main
+
+Story, Previous Events, Evaluation, Attributed Quotes, and Expectation.
+
+Pragmatic
+This level is concerned with the purposeful use of language in situations and utilizes
+
+context over and above the contents of the text for understanding The goal is to explain
+
+how extra meaning is read into texts without actually being encoded in them. This
+
+requires much world knowledge, including the understanding of intentions, plans, and
+
+goals. Some NLP applications may utilize knowledge bases and inferencing modules. For
+
+example, the following two sentences require resolution of the anaphoric term ‘they’, but
+
+this resolution requires pragmatic or world knowledge.
+
+Natural Language processing in textual information retrieval
+As the reader has probably already deduced, the complexity associated with natural language is especially key when retrieving textual information [Baeza-Yates, 1999] to satisfy a user’s information needs. This is why in Textual Information Retrieval, NLP techniques are often used [Allan, 2000] both for facilitating descriptions of document content and for presenting the user’s query, all with the aim of comparing both descriptions and presenting the user the documents that best satisfy their information needs.
+
+In other words, a textual information retrieval system carries out the following tasks in response to a user’s query:
+
+Indexing the collection of documents: in this phase, NLP techniques are applied to generate an index containing document descriptions. Normally each document is described through a set of terms that, in theory, best represents its content.
+
+When a user formulates a query, the system analyses it, and if necessary, transforms it with the hope of representing the user’s information needs in the same way as the document content is represented.
+
+The system compares the description of each document with that of the query, and presents the user with those documents whose descriptions are closest to the query description.
+
+The results are usually listed in order of relevancy, that is, by the level of similarity between the document and query descriptions.
+
+C:UsershpDesktopUntitled.bmp
+
+The architecture of an information retrieval system
+
+As of now there are no NLP techniques that allow us to extract a document’s or query’s meaning without any mistakes. In fact, the scientific community is divided on the procedure to follow in reaching this goal. In the following section we will explain the functions and peculiarities of the two key approaches to natural language processing: a statistical approach and a linguistic focus. Both proposals differ considerably, even though in practice natural language processing systems use a mixed approach, combining techniques from both focuses.
+
+Find out how UKEssays.com can help you!
+Our academic experts are ready and waiting to assist with any writing project you may have. From simple essay plans, through to full dissertations, you can guarantee we have a service perfectly matched to your needs.
+
+CONCLUSION:
+Despite the useful “universal” aspect of programming languages, these languages are still understood only by very few people, unlike the natural languages which are understood by all. The ability to turn natural into programming languages will eventually decrease the gap between very few and all, and open the benefits of computer programming to a larger number of users. In this paper, we showed how current state of-the-art techniques in natural language processing can allow us to devise a system for natural language programming that addresses both the descriptive and procedural programming paradigms. The output of the system consists of automatically generated program skeletons, which were shown to help non-expert programmers in their task of describing algorithms in a programmatic way.
+
+As it turns out, advances in natural language processing helped the task of natural language programming. But we believe that natural language processing could also benefit from natural language programming. The process of deriving computer programs starting with a natural language text implies a plethora of sophisticated language processing tools – such as syntactic parsers, clause detectors, argument structure identifiers, semantic analyzers, methods for co reference resolution, and so forth – which can be effectively put at work and evaluated within the framework of natural language programming.
+
+We thus see natural language programming as a potential large scale end-user (or rather, end computer) application of text processing tools, which puts forward challenges for the natural language processing community and could eventually trigger advances in this field.

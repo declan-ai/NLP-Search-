@@ -1,0 +1,78 @@
+Top 10 Internet of Things Products of 2009
+richard macmanus / 08 Dec 2009 / Web
+Top 10 Internet of Things Products of 2009
+   
+2009 has been a turning point for the Internet of Things, when real world objects (such as lights, cars and packages) get connected to the Internet. This trend has added a significant amount of new data to the Web, so for that reason alone it is an important development. Having said that, many of the following top 10 list are not yet mainstream products. But we expect some of them to become well known over the coming years.
+
+
+Underlying the Internet of Things are technologies such as RFID (radio frequency identification), sensors and smartphones. Now let’s look at the 10 products that stood out this year.
+
+ReadWriteWeb’s Best Products of 2009:
+
+Top 10 Mobile Web Products
+Top 10 Consumer Web Apps
+Top 10 Semantic Web Products
+Top 10 International Web Products
+Top 10 RSS & Syndication Technologies
+Top 10 Enterprise Products
+Top 10 Internet of Things Products
+Top 10 Real-Time Technologies
+Top 10 Startup Products
+Top 10 Web Platforms
+Pachube
+A small UK startup particularly impressed us this year: Pachube. Pronounced “PATCH-bay,” Pachube lets you tag and share real time sensor data from objects, devices, buildings and environments both physical and virtual. According to founder Usman Haque, Pachube is about “environments” more so than “sensors.” In other words, Pachube aims to be responsive to and influence your environment, for example your home.
+
+
+For more on this innovative company, see ReadWriteWeb’s three-part analysis of Pachube:
+
+Pachube Adds Real-Time Notifications – More Power to The Internet of Things
+Applications From The Internet of Things – An Analysis of Pachube
+Business Models of The Internet of Things – An Analysis of Pachube’s Open Source Platform
+IBM’s sensor solutions
+One of the leading big companies in the Internet of Things is IBM, which offers a range of RFID and sensor technology solutions. IBM has been busy working with various manufacturers and goods suppliers this year to introduce those solutions to the world. For example, IBM announced a deal at the end of June with Danish transportation company Container Centralen. By February 2010, Container Centralen will begin using IBM sensor technology to enable companies in the horticultural supply chain to track the progress of shipments as they move from growers to wholesalers and retailers across Europe. It makes the travel process very transparent and data centric.
+
+
+
+Arduino
+Arduino is an open-source electronics prototyping platform made up of open source hardware and software. It’s intended for artists, designers, hobbyists and anyone interested in creating interactive objects or environments. For an example of the type of internet-connected object you can build with Arduino, check out this presentation where the author configured a child’s toy ray gun to react when anyone posted the #barcampliverpool hash tag on Twitter.
+
+Fedex SenseAware
+International courier giant Fedex released a new tracking device and web service for packages in December. Called SenseAware, it keeps tabs on the temperature, location and other vital signs of a package – including when it’s opened and whether it was tampered with along the way. Fedex is running a trial period of about a year with 50 health care and life science companies, for tracking delivery of surgery kits, medical equipment – and even live organs.
+
+
+HP CeNSE
+HP Labs has joined the race to build an infrastructure for the Internet of Things. The giant computing and IT services company recently announced a project that aims to be a “Central Nervous System for the Earth” (CeNSE). It’s a research and development program to build a planetwide sensing network, using billions of “tiny, cheap, tough and exquisitely sensitive detectors.” The technology behind this is based on nano-sensing research done by HP Labs. The sensors are similar to RFID chips, but in this case they are tiny accelerometers which detect motion and vibrations.
+
+
+Japan’s Suica Card and Hong Kong’s Octopus Card
+Earlier this year we looked at three of the world’s leading RFID-powered Smart Cards: Japan’s cutting edge Suica Card, London’s Oyster Card and Hong Kong’s long-running Octopus Card. In Japan and Hong Kong, the cards (and other devices, such as phones and watches) may be used to purchase goods from selected shops.
+
+
+It’s more pervasive in Hong Kong, where the Octopus can be used at more than 1,000 merchants. Furthermore, in Hong Kong the card can be used as an access device for places like apartment buildings and schools.
+
+Mir:ror
+Mir:ror is a device from French company Violet that detects the objects you show it and gives them powers. As you wave a device over the USB-attached mirror, you can trigger applications and multimedia content automatically. The “magic” mirror isn’t actually sensing the object itself, but is reacting to an RFID tag placed on the object which then tells your computer what to do.
+
+Those tags are embedded in the company’s Ztamps, colorful RFID stamps that you stick on the objects you want to connect. They also work with the company’s other more well-known internet-connected object: the Nabaztag, an adorable rabbit that can deliver anything from ambient information through lights and sounds to verbal information – like when he reads your email or RSS feeds to you.
+
+Unfortunately, in August Violet filed for bankruptcy. However, in October it was saved by videogame publisher Mindscape.
+
+WideNoise
+The iPhone is a fertile ground for Internet of Things, as a product called WideNoise shows. WideNoise is an iPhone application that samples decibel noise levels, displaying them on an interactive map.
+
+
+With the app you can take a sound reading, and if you so wish share that with the WideNoise community. You can check the average sound level of the area around you, which might be handy if you’re house-hunting or simply looking for a quiet spot to relax in.
+
+ioBridge
+ioBridge is a web platform for remote control and monitoring, which bills itself (with tongue in cheek) as “one step closer to Skynet.” It’s a company based in Gainesville, Florida, born because the founders saw “a demand for interfacing real world devices with the web.” Their first beta release was in November 2008 and since then the company has been busy building out its product line and watching what developers like Matt Morey do with them.
+
+
+Morey, who by day is an engineer for Texas Instruments, has developed a two-way, home automation application using Twitter and ioBridge.
+
+Citysense
+Sense Networks is a company aiming to index the real world “using real-time and historical location data for predictive analytics across multiple industries.” It has a platform called Macrosense that “receives streaming location data in real-time, analyzes and processes the data in the context of billions of historical data points, and stores it in a way that can be easily queried to better understand aggregate human activity.”
+
+
+The company has so far built one consumer product on top of this platform: Citysense, an iPhone and Blackberry app that allows people in San Francisco to see the most-happening nightlife in real time. Citysense currently accesses cell-phone and taxi GPS data from about four million GPS sensors, to see where the local hot spots are. It then links to Yelp and Google to show what venues are operating at popular locations.
+
+Those are our picks for the top 10 Internet of Things applications of 2009. Let us know your thoughts.

@@ -1,0 +1,37 @@
+Bitcoin, cryptocurrency, blockchain... So what does it all mean? 
+Let's start with some quick definitions. Blockchain is the technology that enables the existence of cryptocurrency (among other things). Bitcoin is the name of the best-known cryptocurrency, the one for which blockchain technology was invented. A cryptocurrency is a medium of exchange, such as the US dollar, but is digital and uses encryption techniques to control the creation of monetary units and to verify the transfer of funds.
+ 
+
+What is blockchain technology?
+A blockchain is a decentralized ledger of all transactions across a peer-to-peer network. Using this technology, participants can confirm transactions without a need for a central clearing authority. Potential applications can include fund transfers, settling trades, voting, and many other issues.
+
+
+
+
+
+Blockchain also has potential applications far beyond bitcoin and cryptocurrency.
+From a business perspective, it’s helpful to think of blockchain technology as a type of next-generation business process improvement software. Collaborative technology, such as blockchain, promises the ability to improve the business processes that occur between companies, radically lowering the “cost of trust.” For this reason, it may offer significantly higher returns for each investment dollar spent than most traditional internal investments.
+
+Financial institutions are exploring how they could also use blockchain technology to upend everything from clearing and settlement to insurance. These articles will help you understand these changes—and what you should do about them.
+
+For an overview of cryptocurrency, start with Money is no object from 2015. We explore the early days of bitcoin and provide survey data on consumer familiarity, usage, and more. We also look at how market participants, such as investors, technology providers, and financial institutions, will be affected as the market matures.
+
+For a deeper dive into cryptocurrencies, we recommend that you read the following:
+
+? Carving up crypto provides an overview of how regulators are thinking about cryptocurrency in financial services, both in the United States and abroad.
+
+? In Cryptocurrencies: Time to consider plan B, we explore possible avenues for accounting treatment on cryptocurrencies.
+
+? For board members, Ten questions every board should ask about cryptocurrencies suggests questions to consider when engaging in a conversation about the strategic potential of cryptocurrencies.
+
+For an overview of blockchain in financial services, visit this page: Blockchain in financial services. We examine some of the ways FS firms are using blockchain, and how we expect the blockchain technology to develop in the future. Blockchain isn’t a cure-all, but there are clearly many problems for which this technology is the ideal solution.
+
+For a deeper dive on specific topics related to blockchain, we recommend:
+
+? A strategist’s guide to blockchain examines the potential benefits of this important innovation—and also suggests a way forward for financial institutions. Explore how others might try to disrupt your business with blockchain technology, and how your company could use it to leap ahead instead.
+
+? Building blocks: How financial services can create trust in blockchain discusses some of the issues internal audit and other parties may have with a blockchain solution, and how you can start to overcome some of those concerns.
+
+? Our Global Blockchain Survey explores the current state of the technology across all sectors and geographies.
+
+Many skeptics are beginning to wonder if the “year of blockchain” will ever really arrive. Blockchain announcements continue to occur, although they are less frequent and happen with less fanfare than they did a few years ago. Still, blockchain technology has the potential to result in a radically different competitive future for the financial services industry.

@@ -1,0 +1,2667 @@
+Neural Networks 113 (2019} 54-71
+
+ 
+
+Contents lists available at ScienceDirect
+
+Neural Networks
+
+ 
+
+journal homepage: www.elsevier.com/ocate/neunet
+
+ 
+
+ 
+
+Review
+
+Continual lifelong learning with neural networks: A review nA
+
+Check for
+updates,
+
+German I. Parisi®”, Ronald Kemker”, Jose L. Part‘, Christopher Kanan”, Stefan Wermter*
+* Knowledge Technology, Department of Informatics, Universitét Hamburg, Germany
+
+» Chester F. Cartson Center for Imaging Science, Rochester Institute of Technology, NY, USA
+
+° Department of Computer Science, Heriot-Watt University, Edinburgh Centre for Robotics, Scotland, UK
+
+ 
+
+ARTICLE [NFO ABSTRACT
+
+ 
+
+Article history: Humans and animals have the ability to continually acquire, fine-tune, and transfer knowledge and
+Received 6 July 2018 skills throughout their lifespan. This ability, referred to as lifelong learning, is mediated by a rich set
+Received in revised form 18 January 2019 of neurocognitive mechanisms that together contribute to the development and specialization of our
+Accepted 22 January 2019 sensorimotor skills as well as to long-term memory consolidation and retrieval. Consequently, lifelong
+Available online 6 February 2019 learning capabilities are crucial for computational learning systems and autonomous agents interacting
+
+Keywords: in the real world and processing continuous streams of information. However, lifelong learning remains
+Continual learning a long-standing challenge for machine learning and neural network models since the continual acqui-
+Lifelong learning sition of incrementally available information from non-stationary data distributions generally leads to
+Catastrophic forgetting catastrophic forgetting or interference. This limitation represents a major drawback for state-of-the-
+Developmental systems art deep neural network models that typically learn representations from stationary batches of training
+
+Memory consolidation data, thus without accounting for situations in which information becomes incrementally available over
+
+time. In this review, we critically summarize the main challenges linked to lifelong learning for artificial
+learning systems and compare existing neural network approaches that alleviate, to different extents,
+catastrophic forgetting. Although significant advances have been made in domain-specific learning with
+neural networks, extensive research efforts are required for the development of robust lifelong learning on
+autonomous agents and robots. We discuss well-established and emerging research motivated by lifelong
+learning factors in biological systems such as structural plasticity, memory replay, curriculum and transfer
+
+learning, intrinsic motivation, and multisensory integration.
+© 2019 The Authors. Published by Elsevier Ltd. This is an open access article under the CC BY-NC-ND
+license (http: //creativecommons.org/licenses/by-ne-nd/4.0/}.
+
+ 
+
+Contents
+
+1. Introduction... “
+2. Biological aspects of lifelong learning ...
+2.1. The Stability—Plasticity Dilemma..
+2.2. Hebbian plasticity and stability...........
+2.3. The complementary learning systems
+24. Learning without forgetting ... .
+3. Lifelong learning and catastrophic forgetting i in n neural networks.
+3.1. Lifelong machine learning
+3.2. Regularization approaches ..
+3.3. Dynamic architectures ..
+34. Complementary learning systems and memory Y replay
+3.5. Benchmarks and evaluation metrics.. .
+4. Developmental approaches and auitonomous agents ,
+4.1. Towards autonomous agents... sean
+42. Developmental and curriculum learning.
+43. Transfer learning ... we
+44. Curiosity and intrinsic ‘motivation
+4.5. Multisensory learning
+5. Conclusion... eee eee
+
+ 
+
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+
+* Correspondence to: Knowledge Technology, Department of Informatics, Universitat Hamburg, Vogt-Koelln-Strasse 30, Hamburg 22527, Germany.
+E-mail address: parisi@informatik.uni-hamburg.de (G.I. Parisi}.
+
+https://doi.org/10.1016/j neunet.2019.01.012
+
+0893-6080/G 2019 The Authors. Published by Elsevier Ltd. This is an open access article under the CC BY-NC-ND license (http://creativecommons.org/licenses/by-ne-
+nd/4.0/}.
+GI Parisi, R. Kemker, J.L. Part et al. / Neural Networks 113 (2019) 54-71 55
+
+Acknowledgements ...
+References ....... cee
+
+  
+
+ 
+
+1. Introduction
+
+Computational systems operating in the real world are exposed
+to continuous streams ofinformation and thus are required to learn
+and remember multiple tasks from dynamic data distributions.
+For instance, an autonomous agent interacting with the environ-
+ment is required to learn from its own experiences and must
+be capable of progressively acquiring, fine-tuning, and transfer-
+ring knowledge over long time spans. The ability to continually
+learn over time by accommodating new knowledge while retaining
+previously learned experiences is referred to as continual or life-
+long learning. Such a continuous learning task has represented a
+long-standing challenge for machine learning and neural networks
+and, consequently, for the development of artificial intelligence
+(Al) systerns (Hassabis, Kumaran, Summerfield, & Botvinick, 2017;
+Thrun & Mitchell, 1995).
+
+The main issue of computational models regarding lifelong
+learning is that they are prone to catastrophic forgetting or catas-
+trophic interference, i.e., training a model with new information
+interferes with previously learned knowledge (McClelland, Mc-
+Naughton, & O'Reilly, 1995; McCloskey & Cohen, 1989}. This phe-
+nomenon typically leads to an abrupt performance decrease or,
+in the worst case, to the old knowledge being completely over-
+written by the new one. Current deep neural network learning
+models excel at a number of classification tasks by relying on
+a large batch of (partially) annotated training samples (see Guo
+et al. (2016) and LeCun, Bengio, and Hinton (2015) for reviews).
+However, such a learning scheme assumes that all samples are
+available during the training phase and, therefore, requires the
+retraining of the network parameters on the entire dataset in order
+to adapt to changes in the data distribution. When trained on
+sequential tasks with samples becoming progressively available
+over time, the performance of conventional neural network models
+significantly decreases on previously learned tasks as new tasks
+are learned (Kemker, McClure, Abitino, Hayes, & Kanan, 2018;
+Maltoni & Lomonaco, 2018). Although retraining from scratch
+pragmatically addresses catastrophic forgetting, this methodol-
+ogy is very inefficient and hinders the learning of novel data in
+real time. For instance, in scenarios of developmental learning
+where autonomous agents learn by actively interacting with the
+environment, there may be no distinction between training and
+test phases, requiring the learning model to concurrently adapt
+and timely trigger behavioural responses (Cangelosi & Schlesinger,
+2015; Tani, 2016).
+
+For overcoming catastrophic forgetting, learning systems must,
+on the one hand, show the ability to acquire new knowledge and
+refine existing knowledge on the basis of the continuous input
+and, on the other hand, prevent the novel input from significantly
+interfering with existing knowledge. The extent to which a sys-
+tem must be plastic in order to integrate novel information and
+stable in order not to catastrophically interfere with consolidated
+knowledge is known as the stability-plasticity dilemma and has
+been widely studied in both biological systems and computational
+models (Ditzler, Roveri, Alippi, & Polikar, 2015; Grossberg, 1980,
+2012; Mermillod, Bugaiska, & Bonin, 2013). Due to the very chal-
+lenging but high-impact aspects of lifelong learning, a large body
+of computational approaches have been proposed that take inspi-
+ration from the biological factors of learning from the mammalian
+brain.
+
+Humans and other animals excel at learning in a lifelong man-
+ner, making the appropriate decisions on the basis of
+
+sensorimotor contingencies learned throughout their lifespan
+(Bremner, Lewkowicz, & Spence, 2012; Tani, 2016). The ability to
+incrementally acquire, refine, and transfer knowledge over sus-
+tained periods of time is mediated by a rich set of neurophysio-
+logical processing principles that together contribute to the early
+development and experience-driven specialization of perceptual
+and motor skills (Lewkowicz, 2014; Murray, Lewkowicz, Amedi,
+& Wallace, 2016; Power & Schlaggar, 2016; Zenke, Gerstner and
+Ganguli, 2017). In Section 2, we introduce a set of widely stud-
+ied biological aspects of lifelong learning and their implications
+for the modelling of biologically motivated neural network ar-
+chitectures. First, we focus on the mechanisms of neurosynaptic
+plasticity that regulate the stability—plasticity balance in multiple
+brain areas (Sections 2.2 and 2.3}. Plasticity is an essential fea-
+ture of the brain for neural malleability at the level of cells and
+circuits (see Power and Schlaggar (2016) a survey). For a stable
+continuous lifelong process, two types of plasticity are required:
+(i) Hebbian plasticity (Hebb, 1949) for positive feedback instability,
+and (ii} compensatory homeostatic plasticity which stabilizes neu-
+ral activity. It has been observed experimentally that specialized
+mechanisms protect knowledge about previously learned tasks
+from interference encountered during the learning of novel tasks
+by decreasing rates of synaptic plasticity (Cichon & Gan, 2015).
+Together, Hebbian learning and homeostatic plasticity stabilize
+neural circuits to shape optimal patterns of experience-driven
+connectivity, integration, and functionality (Abraham & Robins,
+2005; Zenke, Gerstner et al., 2017).
+
+Importantly, the brain must carry out two complementary
+tasks: generalize across experiences and retain specific memories
+of episodic-like events. In Section 2.4, we summarize the comple-
+mentary learning systems (CLS) theory (Kumaran, Hassabis, & Mc-
+Clelland, 2016; McClelland et al., 1995) which holds the means for
+effectively extracting the statistical structure of perceived events
+(generalization) while retaining episodic memories, i.e., the collec-
+tion of experiences at a particular time and place. The CLS theory
+defines the complementary contribution of the hippocampus and
+the neocortex in learning and memory, suggesting that there are
+specialized mechanisms in the human cognitive system for pro-
+tecting consolidated knowledge. The hippocampal system exhibits
+short-term adaptation and allows for the rapid learning of new
+information which will, in turn, be transferred and integrated into
+the neocortical system for its long-term storage. The neocortex is
+characterized by a slow learning rate and is responsible for learning
+generalities. However, additional studies in learning tasks with
+human subjects (Mareschal, Johnson, Sirios, Spratling, Thomas,
+& Westermann, 2007; Pallier et al., 2003) observed that, under
+certain circumstances, catastrophic forgetting may still occur (see
+Section 2.4}.
+
+Studies on the neurophysiological aspects of lifelong learning
+have inspired a wide range of machine learning and neural network
+approaches. In Section 3, we introduce and compare computational
+approaches that address catastrophic forgetting. We focus on re-
+cent learning models that (i) regulate intrinsic levels of synap-
+tic plasticity to protect consolidated knowledge (Section 3.2);
+(ii) allocate additional neural resources to learn new information
+(Section 3.3), and (iii) use complementary learning systems for
+memory consolidation and experience replay (Section 3.4). The
+vast majority of these approaches are designed to address lifelong
+supervised learning on annotated datasets of finite size (e.g., Kirk-
+patrick et al. (2017), Zenke, Poole and Ganguli et al. (2017)) and
+do not naturally extend to more complex scenarios such as the
+56 GI. Parisi, R. Kemker, .L. Part et al. / Neural Networks 113 (2019) 54-71
+
+processing of partially unlabelled sequences. Unsupervised
+lifelong learning, on the other hand, has been proposed mostly
+through the use of self-organizing neural networks (e.g., Parisi,
+Tani, Weber, and Wermter (2017), Parisi, Tani, Weber and Wermter
+(2018) and Richardson and Thomas (2008}). Although significant
+advances have been made in the design of learning methods with
+structural regularization or dynamic architectural update, consid-
+erably less attention has been given to the rigorous evaluation
+of these algorithms in lifelong and incremental learning tasks.
+Therefore, in Section 3.5 we discuss the importance of using and
+designing quantitative metrics to measure catastrophic forgetting
+with large-scale datasets.
+
+Lifelong learning has recently received increasing attention due
+to its implications in autonomous learning agents and robots. Neu-
+ral network approaches are typically designed to incrementally
+adapt to modality-specific, often synthetic, data samples collected
+in controlled environments, shown in isolation and random order.
+This differs significantly from the more ecological conditions hu-
+mans and other animals ate exposed to throughout their lifespan
+(Cangelosi & Schlesinger, 2015; Krueger & Dayan, 2009; Skinner,
+1958; Wermter, Palm, & Elshaw, 2005}. Agents operating in the real
+world must deal with sensory uncertainty, efficiently process con-
+tinuous streams of multisensory information, and effectively learn
+multiple tasks without catastrophically interfering with previously
+learned knowledge. Intuitively, there is a huge gap between the
+above-mentioned neural network models and more sophisticated
+lifelong learning agents expected to incrernentally learn from their
+continuous sensorimotor experiences.
+
+Humans can easily acquire new skills and transfer knowledge
+across domains and tasks (Barnett & Ceci, 2002) while artificial
+systems are still in their infancy regarding what is referred to as
+transfer learning (Weiss, Khoshgoftaar, &® Wang, 2016). Further-
+more, and in contrast with the predominant tendency to train
+neural network approaches with uni-sensory (e.g., visual or au-
+ditory) information, the brain benefits significantly from the in-
+tegration of multisensory information, providing the means for
+an efficient interaction also in situations of sensory uncertainty
+(Bremner et al., 2012: Spence, 2010; Stein, Stanford, & Rowland,
+2014). The multisensory aspects of early development and senso-
+rimotor specialization in the brain have inspired a large body of re-
+search on autonomous embodied agents (Cangelosi & Schlesinger,
+2015; Lewkowicz, 2014). In Section 4, we review computational
+approaches motivated by biological aspects of learning which
+include critical developmental stages and curriculum learning
+(Section 4.2), transfer learning for the reuse of knowledge during
+the learning of new tasks (Section 4.3), reinforcement learning for
+the autonomous exploration of the environment driven by intrinsic
+motivation and self-supervision (Section 4.4), and multisensory
+systems for crossmodal lifelong learning (Section 4.5}.
+
+This review complements previous surveys on catastrophic for-
+getting in connectionist models (French, 1999; Goodfellow, Mirza,
+Xiao, Courville, & Bengio, 2013; Soltoggio, Stanley, & Risi, 2017)
+that do not critically compare recent experimental work (e.g., deep
+learning) or define clear guidelines on how to train and evalu-
+ate lifelong approaches on the basis of experimentally observed
+developmental mechanisms. Together, our and previous reviews
+highlight lifelong learning as a highly interdisciplinary challenge.
+Although the individual disciplines may have more open questions
+than answers, the combination of these findings may provide a
+breakthrough with respect to current ad-hoc approaches, with
+neural networks being the stepping stone towards the increas-
+ingly sophisticated cognitive abilities exhibited by AI systerns. In
+Section 5, we summarize the key ideas presented in this review
+and provide a set of ongoing and future research directions.
+
+2. Biological aspects of lifelong learning
+2.1. The Stability-Plasticity Dilemma
+
+As humans, we have an astonishing ability to adapt by effec-
+tively acquiring knowledge and skills, refining them on the basis of
+novel experiences, and transferring ther across multiple domains
+(Barnett & Ceci, 2002; Bremner et al., 2012; Calvert, Spence, &
+Stein, 2004). While it is true that we tend to gradually forget pre-
+viously learned information throughout our lifespan, only rarely
+does the learning of novel information catastrophically interfere
+with consolidated knowledge (French, 1999}. For instance, the hu-
+man somatosensory cortex can assimilate new information during
+motor learning tasks without disrupting the stability of previously
+acquired motor skills (Braun et al., 2001). Lifelong learning in the
+brain is mediated by a rich set of neurophysiological principles
+that regulate the stability—plasticity balance of the different brain
+areas and that contribute to the development and specialization of
+our cognitive system on the basis of our sensorimotor experiences
+(Lewkowicz, 2014; Murray et al., 2016; Power & Schlaggar, 2016;
+Zenke, Gerstner et al., 2017). The stability—-plasticity dilemma re-
+gards the extent to which a system must be prone to integrate and
+adapt to new knowledge and, importantly, how this adaptation
+process should be compensated by internal mechanisms that stabi-
+lize and modulate neural activity to prevent catastrophic forgetting
+(Ditzler et al., 2015; Mermillod et al., 2013)
+
+Neurosynaptic plasticity is an essential feature of the brain
+yielding physical changes in the neural structure and allowing us to
+learn, remember, and adapt to dynamic environments (see Power
+and Schlaggar (2016) for a survey). The brain is particularly plastic
+during critical periods of early development in which neural net-
+works acquire their overarching structure driven by sensorimotor
+experiences. Plasticity becomes less prominent as the biological
+system stabilizes through a well-specified set of developmental
+stages, preserving a certain degree of plasticity for its adaptation
+and reorganization at smaller scales (Hensch et al., 1998; Kiyota,
+2017; Quadrato, Elnaggar, & Di Giovanni, 2014). The specific pro-
+files of plasticity during critical and post-developmental periods
+vary across biological systems (Uylings, 2006), showing a consis-
+tent tendency to decreasing levels of plasticity with increasing
+age (Hensch, 2004). Plasticity plays a crucial role in the emer-
+gence of sensorimotor behaviour by complementing genetic in-
+formation which provides a specific evolutionary path (Grossberg,
+2012). Genes or molecular gradients drive the initial development
+for granting a rudimentary level of performance from the start
+whereas extrinsic factors such as sensory experience complete
+this process for achieving higher structural complexity and perfor-
+mance (Hirsch & Spinelli, 1970; Shatz, 1996; Sur & Leamey, 2001).
+In this review, we focus on the developmental and learning aspects
+of brain organization while we refer the reader to Soltoggio et al.
+(2017) for a review of evolutionary imprinting.
+
+2.2. Hebbian plasticity and stability
+
+The ability of the brain to adapt to changes in its environment
+provides vital insight into how connectivity and function of the
+cortex are shaped. It has been shown that while rudimentary
+patterns of connectivity in the visual system are established in
+early development, normal visual input is required for the correct
+development of the visual cortex. The seminal work of Hubel and
+Wiesel (1967} on the emergence of ocular dominance showed
+the importance of timing of experience on the development of
+normal patterns of cortical organization. The visual experience of
+newborn kittens was experimentally manipulated to study the
+effects of varied input on brain organization. They observed that
+the disruption of cortical organization was more severe when the
+GI Parisi, R. Kemker, J.L. Part et al. / Neural Networks 113 (2019) 54-71 57
+
+deprivation of visual input began prior to ten weeks of age while no
+changes were observed in adult animals. Additional experiments
+showed that neural patterns of cortical organization can be driven
+by external environmental factors at least for a period early in
+development (Hubel & Wiesel, 1962, 1970; Hubel, Wiesel, & LeVay,
+1977).
+
+The most well-known theory describing the mechanisms of
+synaptic plasticity for the adaptation of neurons to external stimuli
+was first proposed by Hebb (1949), postulating that when one neu-
+ron drives the activity of another neuron, the connection between
+them is strengthened. More specifically, the Hebb’s rule states that
+the repeated and persistent stimulation of the postsynaptic cell
+from the presynaptic cell leads to an increased synaptic efficacy.
+Throughout the process of development, neural systems stabilize
+to shape optimal functional patterns of neural connectivity. The
+simplest form of Hebbian plasticity considers a synaptic strength
+w which is updated by the product of a pre-synaptic activity x and
+the post-synaptic activity y:
+
+Aw =x-y-n, (1)
+
+where 7 is a given learning rate. However, Hebbian plasticity alone
+is unstable and leads to runaway neural activity, thus requiring
+compensatory mechanisms to stabilize the learning process (Ab-
+bott & Nelson, 2000; Bienenstock, Cooper, & Munro, 1982). Stability
+in Hebbian systems is typically achieved by augmenting Hebbian
+plasticity with additional constraints such as upper limits on the
+individual synaptic weights or average neural activity (Miller &
+MacKay, 1994; Song, Miller, & Abbott, 2000). Horneostatic mech-
+anisms of plasticity include synaptic scaling and meta-plasticity
+which directly affect synaptic strengths (Davis, 2006; Turrigiano,
+2011}. Without loss of generality, homeostatic plasticity can be
+viewed as a modulatory effect or feedback control signal that
+regulates the unstable dynamics of Hebbian plasticity (see Fig. 1a).
+The feedback controller directly affects synaptic strength on the
+basis of the observed neural activity and must be fast in relation to
+the timescale of the unstable system (Astrém & Murray, 2010). In
+its simplest form, modulated Hebbian plasticity can be modelled
+by introducing an additional modulatory signal m to Eq. (1) such
+that the synaptic update is given by
+
+Aw =m-x-y-7. (2)
+
+Modulatory feedback in Hebbian neural networks has received
+increasing attention, with different approaches proposing biologi-
+cally plausible learning through modulatory loops (Grant, Tanner,
+& Itti, 2017; Soltoggio et al. 2017). For a critical review of the
+temporal aspects of Hebbian and homeostatic plasticity, we refer
+the reader to Zenke, Gerstner et al. (2017).
+
+Evidence on cortical function has shown that neural activity in
+multiple brain areas results from the combination of bottom-up
+sensory drive, top-down feedback, and prior knowledge and ex-
+pectations (Heeger, 2017). In this setting, complex neurodynamic
+behaviour can emerge from the dense interaction of hierarchically
+arranged neural circuits in a self-organized manner (Tani, 2016).
+Input-driven self-organization plays a crucial role in the brain
+(Nelson, 2000}, with topographic maps being a common feature
+of the cortex for processing sensory input (Willshaw & von der
+Malsburg, 1976). Different models of neural self-organization have
+been proposed that resemble the dynamics of basic biological
+findings on Hebbian-like learning and plasticity (Fritzke, 1992;
+Kohonen, 1982; Marsland, Shapiro, & Nehmzow, 2002; Martinetz,
+Berkovich, & Schulten, 1993}, demonstrating that neural map or-
+ganization results from unsupervised, statistical learning with
+nonlinear approximations of the input distribution. To stabilize the
+unsupervised learning process, neural network self-organization
+can be complemented with top-down feedback such as task-
+relevant signals that modulate the intrinsic map plasticity (Parisi
+
+et al., 2018; Soltoggio et al., 2017). In a hierarchical processing
+regime, neural detectors have increasingly large spatio-temporal
+receptive fields to encode information over larger spatial and tem-
+poral scales (Hasson, Yang, Vallines, Heeger, & Rubin, 2008; Taylor,
+Hobbs, Burroni, & Siegelmann, 2015). Thus, higher-level layers
+can provide the top-down context for modulating the bottom-
+up sensory drive in lower-level layers. For instance, bottom-up
+processing is responsible for encoding the co-occurrence statis-
+tics of the environment while error-driven signals modulate this
+feedforward process according to top-down, task-specific factors
+(Murray et al., 2016}. Together, these models contribute to a better
+understanding of the underlying neural mechanisms for the devel-
+opment of hierarchical cortical organization.
+
+2.3. The complementary learning systems
+
+The brain learns and memorizes. The former task is charac-
+terized by the extraction of the statistical structure of the per-
+ceived events with the aim to generalize to novel situations. The
+latter, conversely, requires the collection of separated episodic-
+like events. Consequently, the brain must comprise a mecha-
+nism to concurrently generalize across experiences while retaining
+episodic memories.
+
+Sophisticated cognitive functions rely on canonical neural cir-
+cuits replicated across multiple areas (Douglas, Koch, Mahowald,
+Martin, & Suarez, 1995). However, although there are shared struc-
+tural properties, different brain areas operate at multiple timescales
+and learning rates, thus differing significantly from each other
+in a functional way (Benna & Fusi, 2016; Fusi, Drew, & Abbott,
+2005). A prominent example is the complementary contribution
+of the neocortex and the hippocampus in learning and memory
+consolidation (McClelland et al., 1995; O'Reilly, 2004; O'Reilly &
+Norman, 2002). The complementary learning systems (CLS) the-
+ory (McClelland et al., 1995} holds that the hippocampal system
+exhibits short-term adaptation and allows for the rapid learning
+of novel information which will, in turn, be played back over
+time to the neocortical system for its long-term retention (see
+Fig. 1b). More specifically, the hippocampus employs a rapid learn-
+ing rate and encodes sparse representations of events to mini-
+mize interference. Conversely, the neocortex is characterized by
+a slow learning rate and builds overlapping representations of
+the learned knowledge. Therefore, the interplay of hippocampal
+and neocortical functionality is crucial to concurrently learn reg-
+ularities (statistics of the environment) and specifics (episodic
+memories). Both brain areas are known to learn via Hebbian and
+error-driven mechanisms (O'Reilly & Rudy, 2000). In the neocortex,
+feedback signals will yield task-relevant representations while, in
+the case of the hippocampus, error-driven modulation can switch
+its functionally between pattern discrimination and completion for
+recalling information (O'Reilly, 2004).
+
+Studies show that adult neurogenesis contributes to the forma-
+tion of new memories (Altman, 1963; Cameron, Woolley, McEwen,
+& Gould, 1993; Eriksson et al., 1998; Gage, 2000}. It has been
+debated whether human adults grow significant amounts of new
+neurons. Recent research has suggested that hippocampal neuro-
+genesis drops sharply in children to undetectable levels in adult-
+hood (Sorrells et al., 20 18). On the other hand, other studies suggest
+that hippocampal neurogenesis sustains human-specific cogni-
+tive function throughout life (Boldrini, Fulmore, Tartt, Simeon, &
+Pavlova, 2018). During neurogenesis, the hippocampus’ dentate
+gyrus uses new neural units to quickly assimilate and immediately
+recall new information (Altman, 1963; Eriksson et al., 1998). Dur-
+ing initial memory formation, the new neural progenitor cells ex-
+hibit high levels of plasticity; and as time progresses, the plasticity
+decreases to make the new memory more stable (Deng, Aimone,
+& Gage, 2010}. In addition to neurogenesis, neurophysiological
+58 GI. Parisi, R. Kemker, .L. Part et al. / Neural Networks 113 (2019) 54-71
+
+@) Hebbian and Homeostatic Plasticity
+
+Control
+signal | r] Observations
+
+Synaptic strength
+
+| { Plasticity
+
+Neural activity
+
+}
+
+External stimuli
+
+ 
+
+Controller
+
+ 
+
+ 
+
+ 
+
+ 
+
+System
+
+ 
+
+ 
+
+ 
+
+b) Complementary Learning Systems (CLS) theory
+
+ 
+
+ 
+
+ 
+
+Hippocampus Neocortex
+Episodic a
+Memory Generalization
+
+Storage,
+retrieval,
+
+Fast learning replay Slow learning
+
+of arbitrary of structured
+information knowledge
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Fig. 1. Schematic view of two aspects of neurosynaptic adaptation: (a) Hebbian learning with homeostatic plasticity as a compensatory mechanism that uses observations
+to compute a feedback control signal (Adapted with permission from Zenke, Gerstner et al. (2017}). (b) The complementary learning systems (CLS) theory (McClelland et al.,
+1995} comprising the hippocampus for the fast learning of episodic information and the neocortex for the slow learning of structured knowledge.
+
+studies evidence the contribution of synaptic rewiring by struc-
+tural plasticity on memory formation in adults (Knoblauch, 2017;
+Knoblauch, Kérner, Krner, & Sommer, 2014), with a major role of
+structural plasticity in increasing information storage efficiency in
+terms of space and energy demands.
+
+While the hippocampus is normally associated with the im-
+mediate recall of recent memories (ie., short-term memories),
+the prefrontal cortex (PFC) is usually associated with the preser-
+vation and recall of remote memories (i.e., long-term memories;
+Bontempi, Laurent-Demir, Destrade, and Jaffard (1999)). Kitamura
+et al. (2017) showed that, when the brain learns something new,
+the hippocampus and PFC are both initially encoded with the
+corresponding memory; however, the hippocampus is primarily
+responsible for the recent recall of new information. Over time,
+they showed that the corresponding memory is consolidated over
+to PFC, which will then take over responsibility for recall of the
+(now) remote memory. It is believed that the consolidation of
+recent memories into long-term storage occurs during rapid eye
+movement (REM) sleep (Gais et al., 2007; Taupin & Gage, 2002}.
+
+Recently, the CLS theory was updated to incorporate additional
+findings from neuroscience (Kumaran et al., 2016). The first set of
+findings regards the role of the replaying of memories stored in the
+hippocampus as a mechanism that, in addition to the integration
+of new information, also supports the goal-oriented manipula-
+tion of experience statistics (O'Neill, Pleydell-Bouverie, Dupret, &
+Csicsvari, 2010}. The hippocampus rapidly encodes episodic-like
+events that can be reactivated during sleep or unconscious and
+conscious memory recall (Gelbard-Sagiv, Mukamel, Harel, Malach,
+& Fried, 2008), thus consolidating information in the neocortex via
+the reactivation of encoded experiences in terms of multiple in-
+ternally generated replays (Ratcliff, 1990). Furthermore, evidence
+suggests that (i) the hippocampus supports additional forms of
+generalization through the recurrent interaction of episodic mem-
+ories (Kumaran & McClelland, 2012) and (ii) if the new information
+is consistent with existing knowledge, then its integration into
+the neocortex is faster than originally suggested (Tse et al., 2011).
+Overall, the CLS theory holds the means for effectively generalizing
+across experiences while retaining specific memories in a lifelong
+manner. However, the exact neural mechanisms remain poorly
+understood.
+
+2.4, Learning without forgetting
+
+The neuroscience findings described in Section 2.3 demon-
+strate the existence of specialized neurocognitive mechanisms for
+acquiring and protecting knowledge. Nevertheless, it has been
+observed that catastrophic forgetting may occur under specific cir-
+cumstances. For instance, Mareschal et al. (2007) found an asym-
+metric interference effect in a sequential category learning task
+
+with 3- and 4-month-old infants. The infants had to learn two
+categories, dog and cat, from a series of pictures and would have
+to later distinguish a novel animal in a subsequent preferential
+looking task. Surprisingly, it was observed that infants were able
+to retain the category dog only if it was learned before cat. This
+asymmetric effect is thought to reflect the relative similarity of the
+two categories in terms of perceptual structure.
+
+Additional interference effects were observed for long-term
+knowledge. Pallier et al. (2003) studied the word recognition abil-
+ities of Korean-born adults whose language environment shifted
+completely from Korean to French after being adopted between
+the ages of 3 and 8 by French families. Behavioural tests showed
+that these subjects had no residual knowledge of the previously
+learned Korean vocabulary. Functional brain imaging data showed
+that the response of these subjects while listening to Korean was
+no different from the response while listening to other foreign
+languages that they had been exposed to, suggesting that their
+previous knowledge of Korean was completely overwritten. Inter-
+estingly, brain activations showed that Korean-born subjects pro-
+duced weaker responses to French with respect to native French
+speakers. It was hypothesized that, while the adopted subjects
+did not show strong responses to transient exposures to the Ko-
+rean vocabulary, prior knowledge of Korean may have had an
+impact during the formulation of language skills to facilitate the
+re-acquisition of the Korean language should the individuals be re-
+exposed to it in an immersive way.
+
+Humans do not typically exhibit strong events of catastrophic
+forgetting because the kind of experiences we ate exposed to are
+very often interleaved (Seidenberg & Zevin, 2006). Nevertheless,
+forgetting effects may be observed when new experiences are
+strongly immersive such as in the case of children drastically
+shifting from Korean to French. Together, these findings reveal a
+well-regulated balance in which, on the one hand, consolidated
+knowledge must be protected to ensure its long-term durability
+and avoid catastrophic interference during the learning of novel
+tasks and skills over long periods of time. On the other hand, under
+certain circumstances such as immersive long-term experiences,
+old knowledge can be overwritten in favour of the acquisition and
+refinement of new knowledge.
+
+Taken together, the biological aspects of lifelong learning sum-
+marized in this section provide insights into how artificial mod-
+els and agents could prevent catastrophic forgetting and model
+eraceful forgetting. In the next sections, we describe and compare
+an extensive set of neural network models and AI approaches
+that have taken inspiration from such principles. In the case of
+computational systems, however, additional challenges must be
+faced due to the limitations of learning in restricted scenarios that
+typically capture very few components of the processing richness
+of biological systems.
+GI Parisi, R. Kemker, J.L. Part et al. / Neural Networks 113 (2019) 54-71 59
+
+3. Lifelong learning and catastrophic forgetting in neural net-
+works
+
+3.1. Lifelong machine learning
+
+Lifelong learning represents a long-standing challenge for ma-
+chine learning and neural network systems (French, 1999; Hass-
+abis et al., 2017). This is due to the tendency of learning models
+to catastrophically forget existing knowledge when learning from
+novel observations (Thrun & Mitchell, 1995). A lifelong learning
+system is defined as an adaptive algorithm capable of learning
+from a continuous stream of information, with such information
+becoming progressively available over time and where the number
+of tasks to be learned (e.g., membership classes in a classification
+task) are not predefined. Critically, the accommodation of new
+information should occur without catastrophic forgetting or inter-
+ference.
+
+In connectionist models, catastrophic forgetting occurs when
+the new instances to be learned differ significantly from previ-
+ously observed examples because this causes the new informa-
+tion to overwrite previously learned knowledge in the shared
+representational resources in the neural network (French, 1999;
+McCloskey & Cohen, 1989). When learning offline, this loss of
+knowledge can be recovered because the agent sees the same
+pseudo-randomly shuffled examples over and over, but this is not
+possible when the data cannot be shuffled and is observed as
+a continuous stream. The effects of catastrophic forgetting have
+been widely studied for over two decades, especially in networks
+learned using back-propagation (Lewandowsky & Li, 1994; Ratcliff,
+1990) and in the Hopfield networks (Burgess, Shapiro, & Moore,
+1991; Nadal, Toulouse, Changeux, & Dehaene, 1986).
+
+Early attempts to mitigate catastrophic forgetting typically con-
+sisted of memory systems that store previous data and that regu-
+larly replay old samples interleaved with samples drawn frorn the
+new data (Robins, 1993, 1995}, and these methods are still used
+today (Gepperth & Karaoguz, 2015; Rebuffi, Kolesnikov, Sperl, &
+Lampert, 2016). However, a general drawback of memory-based
+systems is that they require explicit storage of old information,
+leading to large working memory requirements. Furthermore, in
+the case of a fixed amount of neural resources, specialized mech-
+anisms should be designed that protect consolidated knowledge
+from being overwritten by the learning of novel information (e.¢.,
+Karkpatrick et al. (2017) and Zenke, Poole et al. (2017)). Intuitively,
+catastrophic forgetting can be strongly alleviated by allocating ad-
+ditional neural resources whenever they are required (e.g., Hertz,
+Krogh, and Palmer (1991), Parisi et al. (2017, 2018) and Rusu
+et al. (2016)). This approach, however, may lead to scalability
+issues with significantly increased computational efforts for neu-
+ral architectures that become very large. Conversely, since in a
+lifelong learning scenario the number of tasks and samples per
+task cannot be known a priori, it is non-trivial to predefine a suf-
+ficient amount of neural resources that will prevent catastrophic
+forgetting without strong assumptions on the distribution of the
+input. In this setting, three key aspects have been identified for
+avoiding catastrophic forgetting in connectionist models (Richard-
+son & Thomas, 2008}: (i) allocating additional neural resources
+for new knowledge; (ii) using non-overlapping representations if
+resources are fixed: and (iii) interleaving the old knowledge as the
+new information is represented.
+
+The brain has evolved mechanisms of neurosynaptic plasticity
+and complex neurocognitive functions that process continuous
+streams of information in response to both short- and long-term
+changes in the environment (Lewkowicz, 2014; Murray et al,
+2016; Power & Schlaggar, 2016; Zenke, Gerstner et al., 2017). Con-
+sequently, the differences between biological and artificial systems
+go beyond architectural differences, and also include the way in
+
+which these artificial systems are exposed to external stimuli.
+Since birth, humans are immersed in a highly dynamic world and,
+in response to this rich perceptual experience, our neurocogni-
+tive functions progressively develop to make sense of increasingly
+more complex events. Infants start with relatively limited capabil-
+ities for processing low-level features and incrementally develop
+towards the learning of higher-level perceptual, cognitive, and
+behavioural functions. Humans and animals make massive use of
+the spatio-temporal relations and increasingly richer high-order
+associations of the sensory input to learn and trigger meaningful
+behavioural responses. Conversely, artificial systems are typically
+trained in batches, exposing the learning algorithm to multiple
+iterations of the same training samples in a (pseudo-)random
+order, After a fixed number of training epochs, it is expected that
+the learning algorithm has tuned its internal representations and
+can predict novel samples that follow a similar distribution with
+respect to the training dataset. Clearly, this approach can be effec-
+tive (and this is supported by the state-of-the-art performance of
+deep learning architectures for visual classification tasks; see Guo
+et al. (2016) and LeCun et al. (2015) for reviews), but it does not
+reflect the characteristics of lifelong learning tasks.
+
+In the next sections, we introduce and compare different neural
+network approaches for lifelong learning that mitigate, to different
+extents, catastrophic forgetting. Conceptually, these approaches
+can be divided into methods that retrain the whole network while
+regularizing to prevent catastrophic forgetting with previously
+learned tasks (Fig. 2a; Section 3.2), methods that selectively train
+the network and expand it if necessary to represent new tasks
+(Fig. 2b, c; Section 3.3}, and methods that model complementary
+learning systems for memory consolidation, e.g. by using memory
+replay to consolidate internal representations (Section 3.4). Since
+considerably less attention has been given to the rigorous evalu-
+ation of these algorithms in lifelong learning tasks, in Section 3.5
+we highlight the importance of using and designing new metrics
+to measure catastrophic forgetting with large-scale datasets.
+
+3.2. Regularization approaches
+
+Regularization approaches alleviate catastrophic forgetting by
+imposing constraints on the update of the neural weights. Such ap-
+proaches are typically inspired by theoretical neuroscience models
+suggesting that consolidated knowledge can be protected from for-
+getting through synapses with a cascade of states yielding different
+levels of plasticity (Benna & Fusi, 2016; Fusi et al., 2005}. From
+a computational perspective, this is generally modelled via addi-
+tional regularization terms that penalize changes in the mapping
+function of a neural network.
+
+Li and Hoiem (2016) proposed the learning without forgetting
+(LWF) approach composed of convolutional neural networks (CNN}
+in which the network with predictions of the previously learned
+tasks is enforced to be similar to the network with the current
+task by using knowledge distillation, i.e., the transferring of knowl-
+edge from a large, highly regularized model into a smaller model
+(Hinton, Vinyals, & Dean, 2014). According to the LwF algorithm,
+given a set of shared parameters @, across all tasks, it optimizes
+the parameters of the new task @, together with 6, imposing the
+additional constraint that the predictions on the samples of the
+novel task using @, and the parameters of old tasks 6, do not
+shift significantly in order to remember @,. Given the training
+data on the new task (Xp, Y,), the output of old tasks for the new
+data Y,, and randomly initialized new parameters 6,, the updated
+parameters 62, 0°, 67 are given by:
+
+a, ae, ar _— argmin (Ao2o(¥o, Yo) + Lnewl Yn ¥n)
+Bs, B0 En
+
++R(8,,85.0n)) 3)
+60 GI. Parisi, R. Kemker, .L. Part et al. / Neural Networks 113 (2019) 54-71
+
+ 
+
+ 
+
+— x(t1) — x(t) -+t
+
+— x(t1) 4
+
+a) Retraining with
+regularization
+
+x(t)
+
+b) Training with network
+expansion
+
+>t — x(t1) — x(t) —+t
+
+C) Selective network
+retraining and expansion
+
+Fig. 2. Schematic view of neural network approaches for lifelong learning: (a} retraining while regularizing to prevent catastrophic forgetting with previously learned tasks,
+(b} unchanged parameters with network extension for representing new tasks, and (c) selective retraining with possible expansion.
+
+where Lota(Yo, ¥,) and Lnew(Yns Yn) minimize the difference be-
+tween the predicted values Y and the ground-truth values Y of
+the new and old tasks respectively using 6,, 65,05, Ao is used to
+balance new/old tasks, and ® is a regularization term to prevent
+overfitting. However, this approach has the drawbacks of highly
+depending on the relevance of the tasks and that the training
+time for one task linearly increases with the number of learned
+tasks. Additionally, while distillation provides a potential solution
+to multi-task learning, it requires a reservoir of persistent data
+for each learned task. Jung, Ju, Jung, and Kim (2018) proposed to
+regularize the f, distance between the final hidden activations,
+preserving the previously learned input-output mappings by com-
+puting additional activations with the parameters of the old tasks.
+These approaches, however, are computationally expensive since
+they require to compute the old tasks’ parameters for each novel
+data sample. Other approaches opt to either completely prevent
+the update of weights trained on old tasks (Razavian, Azizpour,
+Sullivan, & Carlsson, 2014) or to reduce the learning rate in order
+to prevent significant changes in the network parameters while
+training with new data (Donahue et al., 2014).
+
+Kirkpatrick et al. (2017) proposed the elastic weight consol-
+idation (EWC) model in supervised and reinforcement learning
+scenarios. The approach consists of a quadratic penalty on the
+difference between the parameters for the old and the new tasks
+that slows down the learning for task-relevant weights coding for
+previously learned knowledge. The relevance of the parameter @
+with respect to a task’s training data D is modelled as the posterior
+distribution p(@ | D). Assuming a scenario with two independent
+tasks A with D4 and B with Dz, the log value of the posterior
+probability given by the Bayes’ rule is:
+
+logp(@ | D) = logp(Hz | @) + logp(@ | Da) — logp(Pp), (4)
+
+where the posterior probability logp(@ | Da) embeds all the
+information about the previous task. However, since this term is
+intractable, EWC approximates it as a Gaussian distribution with
+mean given by the parameters @7 and a diagonal precision given
+by the diagonal of the fisher information matrix F. Therefore, the
+loss function of EWC is given by
+
+A
+£(8) = Lal0) + DT SFU — 850 (5)
+
+where £z is the loss of B, A sets the relevance of the old tasks
+with respect to the new one, and ij denotes the indexes of the pa-
+rameters. Therefore, this approach requires a diagonal weighting
+over the parameters of the learned tasks which is proportional to
+the diagonal of the Fisher information metric, with the synaptic
+importance being computed offline and limiting its computational
+application to low-dimensional output spaces. Furthermore, ad-
+ditional experiments by Kemker et al. (2018) have shown that,
+although EWC outperforms other methods for permutation tasks,
+itis not capable of learning new categories incrementally.
+
+Zenke, Poole et al. (2017) proposed to alleviate catastrophic
+forgetting by allowing individual synapses to estimate their impor-
+tance for solving a learned task. Similar to Kirkpatrick et al. (2017),
+this approach penalizes changes to the most relevant synapses so
+that new tasks can be learned with minimal forgetting. To reduce
+large changes in important parameters 0, when learning a new
+task, the authors use a modified cost function £* with a surrogate
+loss which approximates the summed loss functions of all previous
+tasks £3:
+
+Ch = La bo Qf — &Y, (6)
+
+k
+
+where c is a weighting parameter to balance new and old tasks, 0;
+are the parameters at the end of the previous task, and <2? is a per-
+parameter regulation strength. Similar to EWC, this approach pulls
+back the more influential parameters towards a reference weight
+with good performance on previous tasks. In this case, however,
+synaptic relevance is computed in an online fashion over the entire
+learning trajectory in the parameter space. The two approaches
+have shown similar results on the Permuted MNIST benchmark
+(LeCun, Bottou, Bengio, & Haffner, 1998).
+
+Maltoni and Lomonaco (2018) proposed the AR1 model for
+single-incremental-task scenarios which combines architectural
+and regularization strategies. Regularization approaches tend to
+progressively reduce the magnitude of weight changes batch by
+batch, with most of the changes occurring in the top layers. In-
+stead, in AR1 intermediate layers weights are adapted without
+negative impact in terms of forgetting. Reported results on CORe50
+(Lomonaco & Maltoni, 2017) and iCIFAR-100 (Krizhevsky, 2009)
+show that AR1 allows the training of deep convolutional models
+with less forgetting, outperforming LwF, EWC, and SI.
+
+Ensemble methods have been proposed to alleviate
+catastrophic forgetting by training multiple classifiers and com-
+bine them to generate a prediction. Early attempts showed a disad-
+vantage linked to the intense use of storage memory which scales
+up with the number of sessions (Dai, Yang, Xue, & Yu, 2007; Polikar,
+Upda, Upda, & Honavar, 2001}, while more recent approaches
+restrict the size of the models through multiple strategies. For
+instance, Ren, Wang, Li, and Gao (2017) proposed to adaptively
+adjust to the changing data distribution by combining sub-models
+after a new training phase, learning new tasks without referring to
+previous training data. Coop, Mishtal, and Are] (2013) introduced a
+multi-layer perceptron (MLP} augmented with a fixed expansion
+layer (FEL) which embeds a sparsely encoding hidden layer to
+mitigate the interference of previously learned representations.
+Ensembles of FEL networks were used to control levels of plasticity,
+yielding incremental learning capabilities while requiring minimal
+storage memory. Fernando et al. (2017) proposed an ensemble
+method in which a genetic algorithm is used to find the opti-
+mal path through a neural network of fixed size for replication
+and mutation. This approach, referred to as PathNet, uses agents
+GI Parisi, R. Kemker, J.L. Part et al. / Neural Networks 113 (2019) 54-71 61
+
+embedded in a neural network to discover which parts of the
+network can be reused for the learning of new tasks while freezing
+task-relevant paths for avoiding catastrophic forgetting. PathNet’s
+authors showed that incrementally learning new tasks sped up
+the training of subsequently learned supervised and reinforcement
+learning tasks; however, they did not measure performance on the
+original task to determine if catastrophic forgetting occurred. In
+addition, PathNet requires an independent output layer for each
+new task, which prevents it from learning new classes incremen-
+tally (Kemker et al., 2018).
+
+In summary, regularization approaches provide a way to alle-
+viate catastrophic forgetting under certain conditions. However,
+they comprise additional loss terms for protecting consolidated
+knowledge which, with a limited amount of neural resources, may
+lead to a trade-off on the performance of old and novel tasks.
+
+3.3. Dynamic architectures
+
+The approaches introduced here change architectural proper-
+ties in response to new information by dynamically accommo-
+dating novel neural resources, e.g., re-training with an increased
+number of neurons or network layers.
+
+For instance, Rusu et al. (2016) proposed to block any changes
+to the network trained on previous knowledge and expand the
+architecture by allocating novel sub-networks with fixed capacity
+to be trained with the new information. This approach, referred to
+as progressive networks, retains a pool of pre-trained models (one
+for each learned task 7;,). Given N existing tasks, when a new task
+is 7y+1 is given, a new neural network is created and the lateral
+connections with the existing tasks are learned. To avoid catas-
+trophic forgetting, the learned parameters 9" for existing tasks 7;,
+are left unchanged while the new parameter set 0+! js learned
+for 7y41. Experiments reported good results on a wide variety
+of reinforcement learning tasks, outperforming common baseline
+approaches that either pre-train or incrementally fine-tune the
+models by incorporating prior knowledge only at initialization. In-
+tuitively, this approach prevents catastrophic forgetting but leads
+the complexity of the architecture to grow with the number of
+learned tasks.
+
+Zhou, Sohn, and Lee (2012) proposed the incremental training
+of a denoising autoencoder that adds neurons for samples with
+high loss and subsequently merges these neurons with existing
+ones to prevent redundancy. More specifically, the algorithm is
+composed of two processes for (i) adding new features to minimize
+the residual of the objective function and (ii) merging similar
+features to obtain a compact feature representation and in this
+way prevent overfitting. This model was shown to outperform non-
+incremental denoising autoencoders in classification tasks with
+the MNIST (LeCun et al., 1998) and the CIFAR- 10 (Krizhevsky, 2009)
+datasets. Cortes, Gonzalvo, Kuznetsov, Mohri, and Yang (2016) pro-
+posed to adapt both the structure of the network and its weights by
+balancing the model complexity and empirical risk minimization.
+In contrast to enforcing a pre-defined architecture, the algorithm
+learns the required model complexity in an adaptive fashion. The
+authors reported good results on several binary classification tasks
+extracted from the CIFAR-10 dataset. In contrast to previously
+introduced approaches that do not consider multi-task scenarios,
+Xiao, Zhang, Yang, Peng, and Zhang (2014) proposed a training
+algorithm with a network that incrementally grows in capacity and
+also in hierarchical fashion. Classes are grouped according to their
+similarity and self-organized into multiple levels, with models
+inheriting features from existing ones to speed up the learning.
+In this case, however, only the topmost layers can grow and the
+vanilla back-propagation training procedure is inefficient.
+
+Draelos et al. (2017) incrementally trained an autoencoder on
+new MNIST digits using the reconstruction error to show whether
+
+the older digits were retained. Their neurogenesis deep learning
+(NDL) model adds new neural units to the autoencoder to facilitate
+the addition of new MNIST digits, and it uses intrinsic replay (a gen-
+erative model used for pseudo-rehearsal) to preserve the weights
+required to retain older information. Yoon, Yang, Lee, and Hwang
+(2018) took this concept to the supervised learning paradigm and
+proposed a dynarnically expanding network (DEN) that increases
+the number of trainable parameters to incrementally learn new
+tasks. DEN is trained in an online manner by performing selective
+retraining which expands the network capacity using group sparse
+regularization to decide how many neurons to add at each layer.
+
+Part and Lemon (2016, 2017) proposed the combination of a
+pre-trained CNN with a self-organizing incremental neural
+network (SOINN) in order to take advantage of the good rep-
+resentational power of CNNs and, at the same time, allow the
+classification network to grow according to the task requirements
+in a continuous object recognition scenario. An issue that arises
+from these types of approaches is scalability since the classification
+network grows with the number of classes that have been learned.
+Another problem that was identified through this approach is that
+by relying on fixed representations, e.g., pre-trained CNNs, the
+discrimination power will be conditioned by the dataset used to
+train the feature extractor. Rebuffi et al. (2016) deal with this
+problem by storing example data points that are used along with
+new data to dynamically adapt the weights of the feature extractor,
+a technique that is referred to as rehearsal. By combining new and
+old data, they prevent catastrophic forgetting but at the expense of
+a higher memory footprint.
+
+So far, we have considered approaches designed for (or at least
+strictly evaluated on) the classification of static images. However,
+in more natural learning scenarios, sequential input underlying
+spatio-temporal relations such as in the case of videos must be
+accounted for. Parisi et al. (2017) showed that lifelong learning of
+human action sequences can be achieved in terms of prediction-
+driven neural dynamics with internal representations emerging
+in a hierarchy of recurrent self-organizing networks. The self-
+organizing networks can dynamically allocate neural resources
+and update connectivity patterns according to competitive Heb-
+bian learning. Each neuron of the neural map consists of a weight
+vector w; anda number K of context descriptors cj; with wy, (kj €
+R". Asa result, recurrent neurons in the map will encode prototype
+sequence-selective snapshots of the input. Given a set N of recur-
+rent neurons, the best-matching unit (BMU) wy, with respect to the
+input x(t) € R" is computed as:
+
+k=1
+
+K
+b= argmin (soe —wyll? + $2 aelix(t) — cal) »  @)
+
+where {ajti—o.... are constant values that modulate the influence
+of the current input with respect to previous neural activity and
+C,(t) € R” is the global context of the network. Each neuron is
+equipped with a habituation counter h; expressing how frequently
+it has fired based on a simplified model of how the efficacy of a
+habituating synapse reduces over time. The network is initialized
+with two neurons and, at each learning iteration, it inserts a new
+neuron whenever the activity of the network of a habituated neu-
+ron is smaller than a given threshold. The neural update rule is
+given by:
+
+Aw; = «+ hj - (x(t) — wi), (8)
+
+where «; is a constant learning rate and h; acts as a modulatory
+factor (see Eq. (2)) that decreases the magnitude of learning over
+time to protect consolidated knowledge. This approach has shown
+competitive results with batch learning methods on the Weiz-
+mann (Gorelick, Blank, Shechtman, Irani, & Basri, 2005) and the
+KTH (Schuldt, Laptev, & Caputo, 2004) action benchmark datasets.
+62 GI. Parisi, R. Kemker, .L. Part et al. / Neural Networks 113 (2019) 54-71
+
+Furthermore, it learns robust action-label mappings also in the
+case of occasionally missing or corrupted class labels. Parisi, Ji
+and Wermter (2018) showed that self-organizing networks with
+additive neurogenesis show a better performance than a static
+network with the same number of neurons, thereby providing
+insights into the design of neural architectures in incremental
+learning scenarios when the total number of neurons is fixed.
+
+Similar GWR-based approaches have been proposed for the
+incremental learning of body motion patterns (Elfaramawy, Barros,
+Parisi, & Wermter, 2017; Mici, Parisi, & Wermter, 2017; Parisi,
+Mage, & Wermter, 2016) and human-object interaction (Mici,
+Parisi, & Wermter, 2018}. However, these unsupervised learning
+approaches do not take into account top-down task-relevant sig-
+nals that can regulate the stability—plasticity balance, potentially
+leading to scalability issues for large-scale datasets. To address this
+issue, task-relevant modulatory signals were modelled by Parisi
+et al. (2018) which regulate the process of neurogenesis and neural
+update (see Section 3.4}. This model shares a number of conceptual
+similarities with the adaptive resonance theory (ART; see Gross-
+berg (2012) for a review) in which neurons are iteratively adapted
+to a non-stationary input distribution in an unsupervised fashion
+and new neurons can be created in correspondence of dissimilar in-
+put data. In the ART model, learning occurs through the interaction
+of top-down and bottom-up processes: top-down expectations
+act as memory templates (or prototypes) which are compared to
+bottom-up sensory observations. Similar to the GWR'’s activation
+threshold, the ART model uses a vigilance parameter to produce
+fine-grained or more general memories. Despite its inherent ability
+to mitigate catastrophic forgetting during incremental learning, an
+extensive evaluation with recent lifelong learning benchmarks has
+not been reported for continual learning tasks. However, it has
+been noted that the results of some variants of the ART model
+depend significantly upon the order in which the training data are
+processed.
+
+While the mechanisms for creating new neurons and connec-
+tions in the GWR do not resemble biologically plausible mecha-
+nisms (e.g., Eriksson et al. (1998), Knoblauch (2017) and Ming and
+Song (2011}), the GWR learning algorithm represents an efficient
+corn putational model that incrementally adapts to non-stationary
+input. Crucially, the GWR model creates new neurons whenever
+they are required and only after the training of existing ones.
+The neural update rate decreases as the neurons become more
+habituated, which has the effect of preventing that noisy input
+interferes with consolidated neural representations. Alternative
+theories suggest that an additional function of hippocampal neuro-
+genesis is the encoding of time for the formation of temporal asso-
+ciations in memory (Aimone, Wiles, & Gage, 2006, 2009), e.g., in
+terms of temporal clusters of long-term episodic memories. Al-
+though the underlying mechanisms of neurogenesis and structural
+plasticity remain to be further investigated in biological systems,
+these results reinforce that growing neural models with plasticity
+constitute effective mitigation of catastrophic forgetting in non-
+stationary environments.
+
+3.4. Complementary learning systems and memory replay
+
+The CLS theory (Kumaran et al., 2016; McClelland et al, 1995)
+provides the basis for acomputational framework modelling mem-
+ory consolidation and retrieval in which the complementary tasks
+of memorization and generalization are mediated by the interplay
+of the mammalian hippocampus and neocortex (see Section 2.3).
+Importantly, the interplay of an episodic memory (specific expe-
+rience) and a semantic memory (general structured knowledge}
+provides important insights into the mechanisms of knowledge
+consolidation in the absence of sensory input.
+
+Dual-memory learning systems have taken inspiration, to dif-
+ferent extents, from the CLS theory to address catastrophic forget-
+ting. An early computational example of this concept was proposed
+by Hinton and Plaut (1987) in which each synaptic connection has
+two weights: a plastic weight with slow change rate which stores
+long-term knowledge and a fast-changing weight for temporary
+knowledge. This dual-weight method reflects the properties of
+complementary learning systems to mitigate catastrophic forget-
+ting during sequential task learning. French (1997) developed a
+pseudo-recurrent dual-memory framework, one for early process-
+ing and the other for long-term storage, that used pseudo-rehearsal
+(Robins, 1995) to transfer memories between memory centres.
+In pseudo-rehearsal, training samples are not explicitly kept in
+memory but drawn from a probabilistic model. During the next
+two decades, numerous neural network approaches based on CLS
+principles were used to explain and predict results in different
+learning and memory domains (see O'Reilly and Norman (2002)
+for a review). However, there is no empirical evidence that shows
+that these approaches can scale up to a large number of tasks or
+current image and video benchmark datasets (see Section 3.5).
+
+More recently, Soltoggio (2015} proposed the use of short- and
+long-term plasticity for consolidating new information on the basis
+of a cause-effect hypothesis testing when learning with delayed
+rewards. In this case, the difference between the short- and long-
+term plasticity is not related to the duration of the memory but
+rather to the confidence of consistency of cause-effect relation-
+ships. This meta-plasticity rule, referred to as hypothesis testing
+plasticity (HTP), shows that such relationships can be extracted
+from ambiguous information flows, thus towards explaining the
+learning in more complex environments (see Section 4).
+
+Gepperth and Karaoguz(2015} proposed two approaches for in-
+cremental learning using (1) a modified self-organizing map (SOM)
+and (ii) a SOM extended with a short-term memory (STM). We
+refer to these two approaches as GeppNet and GeppNet+STM
+respectively. In the case of the GeppNet, task-relevant feedback
+from a regression layer is used to select whether learning in the
+self-organizing hidden layer should occur. In the GeppNet+STM
+case, the STM is used to store novel knowledge which is occa-
+sionally played back to the GeppNet layer during sleep phases
+interleaved with training phases. This latter approach yielded bet-
+ter performance and faster convergence in incremental learning
+tasks with the MNIST dataset. However, the STM has a limited
+capacity, thus learning new knowledge can overwrite old one. In
+both cases, the learning process is divided into two phases: one
+for initialization and the other for actual incremental learning.
+Additional experiments showed that this approach performs sig-
+nificantly worse than EWC (rkpatrick et al., 2017) on different
+permutation tasks (see Section 3.5). Both GeppNet and GeppNet+
+STM require storing the entire training dataset during training.
+
+Inspired by the generative role of the hippocarnpus for the
+replay of previously encoded experiences, Shin, Lee, Kim, and Kim
+(2017) proposed a dual-model architecture consisting of a deep
+generative model and a task solver. In this way, training data from
+previously learned tasks can be sampled in terms of generated
+pseudo-data and interleaved with information from the new tasks.
+Thus, it is not necessary to explicitly revise old training samples for
+experience replay, reducing the requirements of working memory.
+This approach is conceptually similar to previous ones using a
+pseudo-rehearsal method, i.e., interleaving information of a new
+task with internally generated samples from previously learned
+tasks. Robins (1995) showed that interleaving information of new
+experiences with internally generated patterns of previous ex-
+periences help consolidate existing knowledge without explicitly
+storing training samples. Pseudo-rehearsal was also used by Drae-
+los et al. (2017) for the incremental training of an autoencoder,
+using the output statistics of the encoder to generate input for the
+GI Parisi, R. Kemker, J.L. Part et al. / Neural Networks 113 (2019) 54-71 63
+
+decoder during the replay. However, similar to most of the above-
+described approaches, the use of pseudo-rehearsal methods was
+strictly evaluated on two datasets of relatively low complexity,
+e.g. the MNIST and the Street View House Number (SVHN) (Netzer
+et al., 2011). Consequently, the question arises whether this gen-
+erative approach can scale up to more complex domains.
+
+Liders, Schlager, and Risi (2016) proposed an evolvable Neural
+Turing Machine (ENTM) that enables agents to store long-term
+memories by progressively allocating additional external memory
+components. The optimal structure for a continually learning net-
+work is found from an initially minimal configuration by evolving
+network's topology and weights. The ENTM configurations can per-
+form one-shot learning of new associations and mitigate the effects
+of catastrophic forgetting during incremental learning tasks. A set
+of reported experiments in reinforcement learning tasks showed
+that the dynamic nature of the ENTM approach will cause the
+agents to continually expand its memory over time. This can lead
+to an unnecessary memory expansion that would slow down the
+learning process significantly. A possible solution to address this
+issue can be the introduction of cost functions for a more efficient
+memory allocation and use.
+
+Lopez-Paz and Ranzato (2017) proposed the Gradient Episodic
+Memory (GEM) model that yields positive transfer of knowledge to
+previous tasks. The main feature of GEM to minimize catastrophic
+forgetting is an episodic memory used to store a subset of the
+observed examples from agiven task. While minimizing the losson
+the current task t, GEM treats the losses on the episodic memories
+of tasks k < ¢ as inequality constraints, avoiding their increase
+but allowing their decrease. This method requires considerable
+more memory than other regularization approaches such as EWC
+(cirkpatrick et al., 2017) at training time (with an episodic memory
+My for each task k) but can work much better in the single pass
+setting.
+
+Kemker and Kanan (2018) proposed the FearNet model for
+incremental class learning that is inspired by studies of recall and
+consolidation in the mammalian brain during fear conditioning
+(Kitamura et al., 2017). FearNet uses a hippocampal network ca-
+pable of immediately recalling new examples, a PFC network for
+long-term memories, and a third neural network inspired by the
+basolateral amygdala for determining whether the system should
+use the PFC or hippocampal network for a particular example.
+FearNet consolidates information from its hippocampal network
+to its PFC network during sleep phases. FearNet’s PFC model is a
+generative neural network that creates pseudo-samples that are
+then intermixed with recently observed examples stored in its
+hippocampal network. Kamra, Gupta, and Liu (2018) presented
+a similar dual-memory framework that also uses a variational
+autoencoder as a generative model for pseudo-rehearsal. Their
+framework generates a short-term memory module for each new
+task; however, prior to consolidation, predictions are made using
+an oracle (i.e, they know which module contains the associated
+memory).
+
+Parisi et al. (2018) proposed a dual-memory self-organizing ar-
+chitecture for learning spatiotemporal representations from videos
+ina lifelong fashion. The complementary memories are modelled
+as recurrent self-organizing neural networks: the episodic memory
+quickly adapts to incoming novel sensory observations via com-
+petitive Hebbian Learning, whereas the semantic memory pro-
+gressively learns compact representations by using task-relevant
+signals to regulate intrinsic levels of structural plasticity. For the
+consolidation of knowledge in the absence of sensory input, trajec-
+tories of neural reactivations from the episodic memory are peri-
+odically replayed to both memories. Reported experiments show
+that the described method significantly outperforms previously
+proposed lifelong learning methods in three different incremental
+learning tasks with the CORe50 benchmark dataset (Lomonaco
+and Maltoni (2017); see Section 3.5). Since the development of
+
+the neural maps is unsupervised, this approach can be used in
+scenarios where the annotations of training samples are sparse.
+
+3.5. Benchmarks and evaluation metrics
+
+Despite the large number of proposed methods addressing life-
+long learning, there is no established consensus on benchmark
+datasets and metrics for their proper evaluation. Typically, a direct
+comparison of different methods is hindered by the highly hetero-
+geneous and often limited evaluation schemes to assess the over-
+all performance, levels of catastrophic forgetting, and knowledge
+transfer.
+
+Lopez-Paz and Ranzato (2017) defined training and evaluation
+protocols to assess the quality of continual learning models in
+terms of their accuracy as well as their ability to transfer knowl-
+edge between tasks. The transfer of knowledge can be forwards
+or backwards. The former refers to the influence that learning a
+task Ja has on the performance of a future task 7g, whereas the
+latter refers to the influence of a current task 7g on a previous
+task 74. The transfer is positive when learning about 7,4 improves
+the performance of another task 7, (forwards or backwards) and
+negative otherwise. (See Section 4.3 for an introduction to learning
+models addressing transfer learning.}
+
+Kemker et al. (2018) suggested a set of guidelines for evaluat-
+ing lifelong learning approaches and performed complementary
+experiments that provide a direct quantitative comparison of a
+number of approaches. Such guidelines comprise the use of three
+benchmark experiments: (i) data permutation, (ii) incremental class
+learning, and (iii) multimodal learning. The data permutation ex-
+periment consists in training a model with a dataset along with
+a permuted version of the same dataset, which tests the model's
+ability to incrementally learn new information with similar feature
+representations. It is then expected that the model prevents catas-
+trophic forgetting with the original data during the subsequent
+learning of randomly permuted data samples. In the incremental
+class learning experiment, the model performance reflects its abil-
+ity to retain previously learned information while incrementally
+learning one class at a time. Finally, in the multimodal learning
+experiment, the same model is sequentially trained with datasets
+of different modalities, which tests the model's ability to incremen-
+tally learn new information with dramatically different feature
+representations (e.¢., first learn an image classification dataset and
+then learn an audio classification dataset).
+
+In contrast to the datasets typically proposed in the litera-
+ture to evaluate lifelong learning approaches (e.g., MNIST con-
+taining 10 digit classes with low-resolution images; Fig. 3a}, the
+above-mentioned experimental conditions were conducted us-
+ing the Caltech-UCSD Birds-200 (CUB-200)} dataset composed of
+200 different bird species (Wah et al. (2011); Fig. 3b) and the
+AudioSet dataset, which is built from YouTube videos with 10-s
+sound clips from 632 classes and over 2 million annotations (Gem-
+meke et al., 2017). The approaches considered were supervised: a
+standard MLP trained online as a baseline, the EWC (drkpatrick
+et al., 2017), the PathNet (Fernando et al., 2017), the GeppNet
+and GeppNet+STM (Gepperth & Karaoguz, 2015), and the FEL
+(Coop et al., 2013}. For the data permutation experiment, best
+results were obtained by PathNet followed by EWC, suggesting
+that models that use the ensembling and regularization mecha-
+nisms will work best at incrementally learning new tasks/datasets
+with similar feature distributions. In contrast, EWC performed
+better than PathNet on the multi-modal experiment because EWC
+does a better job on separating non-redundant (ie., dissimilar}
+data. For the incremental learning task, best results were ob-
+tained with a combination of rehearsal and dual-memory systems
+(i.e. GeppNet+STM), yielding gradual adaptation and knowledge
+consolidation (see Fig. 4). However, since rehearsal requires the
+64 GI. Parisi, R. Kemker, .L. Part et al. / Neural Networks 113 (2019) 54-71
+
+     
+  
+
+MNIST b)
+
+HBABe Bn
+Sede Par ALY
+
+     
+
+CUB-200 c)
+
+CORe50
+
+Fig. 3. Example images from benchmark datasets used for the evaluation of lifelong learning approaches: (a) the MNIST dataset with 10 digit classes (LeCun et al, 1998),
+(b} the Caltech-UCSD Birds-200 (CUB-200} dataset composed of 200 different bird species (Wah et al., 2011), and (c} the CORe50 containing 50 objects with variations in
+
+background, illumination, blurring, occlusion, pose, and scale.
+Source: Adapted with permission from Lomonaco and Maltoni (2017).
+
+ 
+
+EWC
+—e— FEL
+MLP
+—— GeppNet
+_— GeppNet
++STM
+
+ 
+
+Offline
+60) —7" Model
+
+40)
+
+Accuracy (%) for Classes
+Trained on so Far
+
+ 
+
+10
+Number of Classes Trained
+
+ 
+
+ 
+
+ 
+
+ 
+
+(a) MNIST
+70 EWC
+8 —— FEL
+$--------------- --- 5-5-5 ee. MLP
+on
+4 5, 0 —— GeppNet
+& & —— GeppNet
+O50 +STM
+& 8 uu, Offline
+ga Model
+es
+A
+ss
+5 i 30
+Be”
+o
+2 10
+0
+100 110 120 130 140 150 160 170 180 190 200
+Number of Classes Trained
+(b) CUB-200
+EWC
+—— FEL
+50 MLP
+—— GoppNet
+
+GeppNet
+—— +STM
+
+ 
+
+Offline
+Model
+
+30.
+
+ey
+S
+
+Accuracy (%) for Classes
+Trained on so Far
+S
+
+50 60 70 80 90 100
+Number of Classes Trained
+
+(c) AudioSet
+
+Fig. 4. Results of several lifelong learning approaches for the incremental class
+learning experiment. The mean-class test accuracy evaluated on the MNIST {a},
+CUB-200 (b}, and AudioSet (c}is shown for the following approaches: FEL (red), MLP
+(yellow), GeppNet (green}, GeppNet--STM (blue), EWC (pink), and offline model
+(dashed line). (For interpretation of the references to colour in this figure legend,
+the reader is referred to the web version of this article.)
+
+Source: Adapted with permission from Kemker et al.(2013).
+
+storage of raw training examples, pseudo-rehearsal may be a better
+strategy for future work.
+
+Lomonaco and Maltoni (2017) proposed the CORe50, a novel
+dataset for continuous object recognition that includes 50 classes
+of objects observed from different perspectives and includes vari-
+ations in background, illumination, blurring, occlusion, pose, and
+scale (Fig. 3c). With respect to the above-discussed datasets,
+COReSO provides samples collected in experimental conditions
+closer to what autonomous agents and robots are exposed to in
+the real world (see Section 4). Along with the dataset, the authors
+propose three incremental learning scenarios: (1} new instances (NI)
+where all classes are shown in the first batch while subsequent
+instances of known classes become available over time, new classes
+(NC} where, for each sequential batch, new object classes are
+available so that the model must deal with the learning of new
+classes without forgetting previously learned ones, and (iii) new
+instances and classes (NIC) where both new classes and instances
+are presented in each training batch. According to the reported
+results, EWC (iMirkpatrick et al., 2017) and LwF (Li & Hoiem, 2016}
+perform significantly worse in NC and NIC than in NI.
+
+Perhaps not surprisingly, overall performance generally drops
+when using datasets of higher complexity such as CUB-200 and
+COReSO than when tested on the MNIST. Such results indicate
+that lifelong learning is a very challenging task and, importantly,
+that the performance of most approaches can differ significantly
+according to the specific learning strategy. This suggests that while
+there is a large number of approaches capable of alleviating catas-
+trophic forgetting in highly controlled experimental conditions,
+lifelong learning has not been tackled for more complex scenar-
+ios. Therefore, additional research efforts are required to develop
+robust and flexible approaches subject to more exhaustive, bench-
+mark evaluation schemes.
+
+4. Developmental approaches and autonomous agents
+4.1. Towards autonomous agents
+
+Humans have the extraordinary ability to learn and progres-
+sively fine-tune their sensorimotor skills in a lifelong manner
+(Bremner et al., 2012; Calvert et al., 2004; Tani, 2016). Since the
+moment of birth, humans are immersed in a highly dynamic cross-
+modal environment which provides a wealth of experiences for
+shaping perception, cognition, and behaviour (Lewkowicz, 2014;
+Murray et al., 2016). A crucial component of lifelong learning in
+infants is their spontaneous capacity of autonomously generating
+goals and exploring their environment driven by intrinsic moti-
+vation (Cangelosi & Schlesinger, 2015; Gopnik, Meltzoff, & Kuhl,
+1999}. Consequently, the ability of learning new tasks and skills
+autonomously through intrinsically motivated exploration is one
+GI Parisi, R. Kemker, J.L. Part et al. / Neural Networks 113 (2019) 54-71 65
+
+of the main factors that differentiate biological lifelong learning
+from current continual neural networks models of classification.
+
+While there has been significant progress in the development
+of models addressing incremental learning tasks (see Section 3),
+such models are designed to alleviate catastrophic forgetting from
+a set of annotated data samples. Typically, the complexity of the
+datasets used for the evaluation of lifelong learning tasks is very
+limited and does not reflect the richness and level of uncertainty
+of the stimuli that artificial agents can be exposed to in the real
+world. Furthermore, neural models are often trained with data
+samples shown in isolation or presented in a random order. This
+significantly differs from the highly organized manner in which
+humans and animals efficiently learn from samples presented ina
+meaningful order for the shaping of increasingly complex concepts
+and skills (Krueger & Dayan, 2009; Skinner, 1958). Therefore, learn-
+ing in alifelong manner goes beyond the incremental accumulation
+of domain-specific knowledge, enabling to transfer generalized
+knowledge and skills across multiple tasks and domains (Barnett
+& Ceci, 2002) and, importantly, benefiting from the interplay of
+multisensory information for the development and specialization
+of complex neurocognitive functions (Lewkowicz, 2014; Murray
+et al., 2016; Tani, 2016}.
+
+Intuitively, it is unrealistic to provide an artificial agent with all
+the necessary prior knowledge to effectively operate in real-world
+conditions (Thrun & Mitchell, 1995). Consequently, artificial agents
+must exhibit a richer set of learning capabilities enabling them
+to interact in complex environments with the aim to process and
+make sense of continuous streams of (often uncertain) information
+(Hassabis et al., 2017; Wermter et al., 2005). In the last decade,
+significant advances have been made to embed biological aspects
+of lifelong learning into neural network models. In this section,
+we summarize well-established and emerging neural network ap-
+proaches driven by interdisciplinary research introducing findings
+from neuroscience, psychology, and cognitive sciences for the de-
+velopment of lifelong learning autonomous agents. We focus on
+discussing models of critical developmental stages and curriculum
+learning (Section 4.2), transfer learning for the reuse of consoli-
+dated knowledge during the acquisition of new tasks (Section 4.3),
+autonomous exploration and choice of goals driven by curiosity
+and intrinsic motivation (Section 4.4), and the crossmodal aspects
+of lifelong learning for multisensory systems and embodied agents
+(Section 4.5). In particular, we discuss on how these components
+(see Fig. 5) can be used (independently or combined) to improve
+current approaches addressing lifelong learning.
+
+4.2. Developmental and curriculum learning
+
+Learning and development interact in a very intricate way
+(Elman, 1993}. Humans show an exceptional capacity to learn
+throughout their lifespan and, with respect to other species, exhibit
+the lengthiest developmental process for reaching maturity. There
+is a limited time window in development in which infants are
+particularly sensitive to the effects of their experiences. This period
+is commonly referred to as the sensitive or critical period of devel-
+opment (Lenneberg, 1967) in which early experiences are partic-
+ularly influential, sometimes with irreversible effects in behaviour
+(Senghas, Kita, & Ozyiirek, 2004). During these critical periods, the
+brain is particularly plastic (Fig. 5a) and neural networks acquire
+their overarching structure driven by sensorimotor experiences
+(see Power and Schlaggar (2016) for a survey). Afterwards, plastic-
+ity becomes less prorninent and the system stabilizes, preserving
+a certain degree of plasticity for its subsequent adaptation and
+reorganization at smaller scales (Hensch et al., 1998; Kiyota, 2017;
+Quadrato et al., 2014).
+
+The basic mechanisms of critical learning periods have been
+studied in connectionist models (Richardson & Thomas, 2008;
+
+Thomas & Johnson, 2006), in particular with the use of self-
+organizing learning systems which reduce the levels of functional
+plasticity through a two-phase training of the topographic neural
+map (Kohonen, 1982, 1995; Miikkulainen, 1997). In a first orga-
+nization phase, the neural map is trained with a high learning
+rate and large spatial neighbourhood size, allowing the network to
+reach an initial rough topological organization. In a second tuning
+phase, the learning rate and the neighbourhood size are iteratively
+reduced for fine-tuning. Implementations of this kind have been
+used to develop models of early visual development (Miller, Keller,
+& Stryker, 1989}, language acquisition (Lambon Ralph & Ehsan,
+2006; Li, Farkas, & McWhinney, 2004), and recovery from brain
+injuries (Marchman, 1993}. Recent studies on critical periods in
+deep neural networks showed that the initial rapid learning phase
+plays a key role in defining the final performance of the networks
+(Achille, Rovere, & Soatto, 2017). The first few epochs of training
+are critical for the allocation of resources across different layers
+dictated by the initial input distribution. After such a critical pe-
+riod, the initially allocated neural resources can be re-distributed
+through additional learning phases.
+
+Developmental learning strategies have been experimented
+on with embedded agents to regulate the embodied interaction
+with the environment in real time (Cangelosi & Schlesinger, 2015;
+Tani, 2016), In contrast to computational models that are fed
+with batches of information, developmental agents acquire an
+increasingly complex set of skills based on their sensorimotor
+experiences in an autonomous manner. Consequently, staged de-
+velopment becomes essential for bootstrapping cognitive skills
+with less amount of tutoring experience. However, the use of
+developmental strategies for artificial learning systems has shown
+to be a very complex practice. In particular, it is difficult to se-
+lect a well-defined set of developmental stages that favours the
+overall learning performance in highly dynamic environments. For
+instance, in the predictive coding framework (Adams, Friston, &
+Bastos, 2015; Rao & Ballard, 1999}, the intention towards a goal
+can be generated through the prediction of the consequence of
+an action by means of the error regression with the prediction
+error. The use of generative models, which are implicit in predictive
+coding, is one component embedded in the framework of active
+inference (Friston et al., 2015}. Active inference models aim to
+understand how to select the data that best discloses its causes
+in dynarnic and uncertain environments through the bilateral use
+of action and perception. Nevertheless, it remains unclear how
+to systematically define developmental stages on the basis of the
+interaction between innate structure, embodiment, and (active)
+inference.
+
+Humans and animals exhibit better learning performance when
+examples are organized in a meaningful way, e.g., by making the
+learning tasks gradually more difficult (Krueger & Dayan, 2009).
+Following this observation, referred to as curriculum learning, El-
+man (1993) showed that having a curriculum of progressively
+harder tasks (Fig. 5a) leads to faster training performance in neural
+network systems. This has inspired similar approaches in robotics
+(Sanger, 1994) and more recent machine learning methods study-
+ing the effects of curriculum learning in the performance of learn-
+ing (Bengio, Louradour, Collobert, & Weston, 2009; Graves et al.,
+2016; Reed & de Freitas, 2015). Experiments on datasets of limited
+complexity (such as MNIST) showed that curriculum learning acts
+as unsupervised pre-training, leading to improved generalization
+and faster speed of convergence of the training process towards the
+global minimum. However, the effectiveness of curriculum learn-
+ing is highly sensitive with respect to the modality of progression
+through the tasks. Furthermore, this approach assumes that tasks
+can be ordered by a single axis of difficulty. Graves, Bellemare,
+Menick, Munos, and Kavukcuoglu (2017) proposed to treat the
+task selection problem as a stochastic policy over the tasks that
+66 GI. Parisi, R. Kemker, .L. Part et al. / Neural Networks 113 (2019) 54-71
+
+a) Developmental & Curriculum Learning
+
+Task complexity
+
+Plasticity
+
+ 
+
+Time
+c) Curiosity and Intrinsic Motivation
+Environment
+
+Agent | External reward
+
+Strategy / action selection
+
+{ Internal reward
+
+( Intrinsic motivation |
+
+b) Multi-Task Transfer Learning
+
+Forward transfer
+
+[ _y
+
+Task A Task B
+
+td
+
+Backward transfer
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Time
+
+d) Crossmodal Learning
+
+     
+
+Integration
+
+Modality A
+
+Modality B
+
+Fig.5. Schematic view of the main components for the development of autonomous agents able to learn over long periods of time in complex environments: Developmental
+and curriculum learning (Section 4.2), transfer learning (Section 4.3), curiosity and intrinsic motivation (Section 4.4}, and crossmodal learning (Section 4.5).
+
+maximizes the learning progress, leading to an improved efficiency
+in curriculum learning. In this case, itis necessary to introduce ad-
+ditional factors such as intrinsic motivation (Barto, 2013; Oudeyer,
+Kaplan, & Hafner, 2007), where indicators of learning progress are
+used as reward signals to encourage exploration (see Section 4.4).
+Curriculum strategies can be seen as a special case of transfer
+learning (Weiss et al., 2016), where the knowledge collected during
+the initial tasks is used to guide the learning process of more
+sophisticated ones.
+
+4,3. Transfer learning
+
+Transfer learning refers to applying previously acquired knowl-
+edge in one domain to solve a problem ina novel domain (Barnett &
+Ceci, 2002; Holyoak & Thagard, 1997; Pan & Yang, 2010). Forward
+transfer refers to the influence that learning a task 74 has on the
+performance of a future task 73, whereas backward transfer refers
+to the influence of a current task 7g on a previous task 74 (Fig. Sb).
+For this reason, transfer learning represents a significantly valuable
+feature of artificial systems for inferring general laws from (a
+limited amount of) particular samples, assuming the simultaneous
+availability of multiple learning tasks with the aim to improve the
+performance at one specific task.
+
+Transfer learning has remained an open challenge in machine
+learning and autonomous agents (see Weiss et al. (2016} for a
+survey). Specific neural mechanisms in the brain mediating the
+high-level transfer learning are poorly understood, although it
+has been argued that the transfer of abstract knowledge may
+be achieved through the use of conceptual representations that
+encode relational information invariant to individuals, objects,
+or scene elements (Doumas, Hummel, & Sandhofer, 2008). Zero-
+shot learning (Lampert, Nickisch, & Harmeling, 2009; Palatucci,
+Pomerleau, Hinton, & Mitchell, 2009} and one-shot learning (Fei-
+Fei, Fergus, & Perona, 2003; Vinyals, Blundell, Lillicrap, & Wierstra,
+2016) aim at performing well on novel tasks but do not prevent
+catastrophic forgetting on previously learned tasks. An early at-
+tempt to realize lifelong learning through transfer learning was
+proposed by Ring (1997) through the use of a hierarchical neural
+
+network that solves increasingly complex reinforcement learning
+tasks by incrementally adding neural units and encode a wider
+temporal context in which actions take place.
+
+More recent deep learning approaches have attempted to tackle
+lifelong transfer learning in a variety of domains. For instance, Rusu
+et al.(2017) proposed the use of progressive neural networks(Rusu
+et al., 2016) to transfer learned low-level features and high-level
+policies from a simulated to a real environment. The task consists
+of learning pixel-to-action reinforcement learning policies with
+sparse rewards from raw visual input to a physical robot manip-
+ulator. Tessler, Givony, Zahavy, Mankowitz, and Mannor (2017)
+introduced a hierarchical deep reinforcement learning network
+that uses an array of skills and skill distillation to reuse and transfer
+knowledge between tasks. The approach was evaluated by teach-
+ing an agent to solve tasks in the Minecraft video game. However,
+skill networks need to be pre-trained and cannot be learned along
+with the overarching architecture in an end-to-end fashion. Lopez-
+Paz and Ranzato (2017) proposed the Gradient Episodic Memory
+(GEM} model that alleviates catastrophic forgetting and performs
+positive transfer to previously learned tasks. The model learns the
+subset of correlations common to a set of distributions or tasks,
+able to predict target values associated with previous or novel tasks
+without making use of task descriptors. However, similar to an is-
+sue shared with most of the approaches discussed in Section 3, the
+GEM model was evaluated on the MNIST and CIFAR100 datasets.
+Therefore, the question remains whether GEM scales up to more
+realistic scenarios.
+
+4.4. Curiosity and intrinsic motivation
+
+Computational models of intrinsic motivation have taken inspi-
+ration from the way human infants and children choose their goals
+and progressively acquire skills to define developmental structures
+in lifelong learning frameworks (Baldassarre and Mirolli (2013);
+see Gottlieb, Oudeyer, Lopes, and Baranes (2013) for a review). In-
+fants seem to select experiences that maximize an intrinsic learn-
+ing reward through an empirical process of exploration (Gopnik
+et al., 1999). From a modelling perspective, it has been proposed
+GI Parisi, R. Kemker, J.L. Part et al. / Neural Networks 113 (2019) 54-71 G7
+
+that the intrinsically motivated exploration of the environment,
+e.g, driven by the maximization of the learning progress (Oudeyer
+et al. (2007) and Schmidhuber (1991), see Fig. 5c for a schematic
+view), can lead to the self-organization of human-like develop-
+mental structures where the skills being acquired become progres-
+sively more complex.
+
+Computational models of intrinsic motivation can collect data
+and acquire skills incrementally through the online (self-}
+generation of a learning curriculum (Baranes & Oudeyer, 2013;
+Forestier & Oudeyer, 2016}. This allows the efficient, stochastic
+selection of tasks to be learned with an active control of the
+growth of the complexity. Recent work in reinforcement learning
+has included mechanisms of curiosity and intrinsic motivation
+to address scenarios where the rewards are sparse or deceptive
+(Bellemare et al., 2016; Forestier, Mollard, & Oudeyer, 2017; Kulka-
+ri, Narasimhan, Saeedi, & Tenenbaum, 2016; Pathak, Agrawal,
+Efros, & Darrell, 2017; Tanneberg, Peters, & Rueckert, 2017). In
+a scenario with very sparse extrinsic rewards, curiosity-driven
+exploration provides intrinsic reward signals that enable the agent
+to autonomously and progressively learn tasks of increasing com-
+plexity.
+
+Pathak et al. (2017) proposed an approach to curiosity-driven
+exploration where curiosity is modelled as the error in an agent’s
+ability to predict the consequences of its own actions. This ap-
+proach has shown to scale up to high-dimensional visual input,
+using the knowledge acquired fromm previous experiences for the
+faster exploration of unseen scenarios. However, the method relies
+on interaction episodes that convert unexpected interactions into
+intrinsic rewards, which does not extend to scenarios where inter-
+actions are rare. In this case, internally generated representations
+of the previous sparse interactions could be replayed and used
+to guide exploration (in a similar way to generative systems for
+memory replay; see Section 3.4).
+
+4,5, Multisensory learning
+
+The ability to integrate multisensory information is a crucial
+feature of the brain that yields a coherent, robust, and efficient
+interaction with the environment (Ernst & Biilthoff, 2004; Spence,
+2014; Stein & Meredith, 1993), Information from different sensor
+modalities (e.g. vision, audio, proprioception) can be integrated
+into multisensory representations or be used to enhance unisen-
+sory ones (see Fig. 5d).
+
+Multisensory processing functions are the result of the interplay
+of the physical properties of the crossmodal stimuli and prior
+knowledge and expectations (e.g., in terms of learned associa-
+tions), scaffolding perception, cognition, and behaviour (see Mur-
+ray et al. (2016) and Stein et al. (2014) for reviews). The process
+of multisensory learning is dynamic across the lifespan and is
+subject to both short- and long-term changes. It consists of the
+dynamic reweighting of exogenous and endogenous factors that
+dictate to which extent multiple modalities interact with each
+other. Low-level stimulus characteristics (e.g., spatial proximity
+and temporal coincidence) are available before the formation of
+learned perceptual representations that bind increasingly complex
+higher-level characteristics (e.g., semantic congruency)}. Sophisti-
+cated perceptual mechanisms of multisensory integration emerge
+during development, starting from basic processing capabilities
+and progressively specializing towards more complex cognitive
+functions on the basis of sensorimotor experience (Lewkowicz,
+2014; Spence, 2014).
+
+From a computational perspective, modelling multisensory
+learning can be useful for a number of reasons. First, multisensory
+functions aim at yielding robust responses in the case of uncertain
+and ambiguous sensory input. Models of causal inference have
+been applied to scenarios comprising the exposure to incongruent
+
+audio-visual information for solving multisensory conflicts (Parisi,
+Barros and Fu et al., 2018; Parisi, Barros and Kerze] et al., 2017).
+Second, if trained with multisensory information, one modality can
+be reconstructed from available information in another modality.
+Moon, Kim, and Wang (2015) proposed multisensory processing
+for an audio-visual recognition task in which knowledge in a
+source modality can be transferred to a target modality. Abstract
+representations obtained from a network encoding the source
+modality can be used to fine-tune the network in the target modal-
+ity, thereby relaxing the imbalance of the available data in the tar-
+get modality. Barros, Parisi, Fu, Liu, and Wermter (2017) proposed
+a deep architecture modelling crossmodal expectation learning.
+After a training phase with multisensory audio-visual information,
+unisensory network channels can reconstruct the expected output
+from the other modality. Finally, mechanisms of attention are
+essential in lifelong learning scenarios for processing relevant
+information in complex environments and efficiently triggering
+goal-directed behaviour from continuous streams of multisensory
+information (Spence, 2014}. Such mechanisms may be modelled
+via the combination of the exogenous properties of crossmodal
+input, learned associations and crossmodal correspondences, and
+internally generated expectations (Chen & Spence, 2017) with the
+aim of continually shaping perception, cognition, and behaviour in
+autonomous agents.
+
+5. Conclusion
+
+Lifelong learning represents an utterly interesting but chal-
+lenging component of artificial systems and autonornous agents
+operating on real-world data, which is typically non-stationary
+and temporally correlated. The mammalian brain remains the
+best model of lifelong learning, which makes biologically-inspired
+learning models a compelling approach. The general notion of
+structural plasticity (Section 2.2) is widely used across the ma-
+chine learning literature and represents a promising solution to
+lifelong learning in its own right, even when disregarding biolog-
+ical desiderata. Proposed computational solutions for mitigating
+catastrophic forgetting and interference have focused on regu-
+lating intrinsic levels of plasticity to protect acquired knowledge
+(Section 3.2), dynamically allocating new neurons or network
+layers to accommodate novel knowledge (Section 3.3), and us-
+ing complementary learning networks with experience replay for
+memory consolidation (Section 3.4). However, despite significant
+advances, current models of lifelong learning are still far from
+providing the flexibility, robustness, and scalability exhibited by
+biological systems. The most popular deep and shallow learning
+models of lifelong learning are restricted to the supervised domain,
+relying on large amounts of annotated data collected in controlled
+environments (see Section 3.5). Such a domain-specific training
+scheme cannot be applied directly to autonomous agents that
+operate in highly dynamic, unstructured environments.
+
+Additional research efforts are required to combine multiple
+methodologies that integrate a variety of factors observed in hu-
+man learners. Basic mechanisms of critical periods of development
+(Section 4.2) can be modelled to empirically determine convenient
+(multilayered) neural network architectures and initial patterns of
+connectivity that improve the performance of the model for sub-
+sequent learning tasks. Methods comprising curriculum and trans-
+fer learning (Section 4.3) are a fundamental feature for reusing
+previously acquired knowledge and skills to solve a problem in
+a novel domain by sharing low- and high-level representations.
+For agents learning autonomously, approaches using intrinsic mo-
+tivation (Section 4.4} are crucial for the self-generation of goals,
+leading to an empirical process of exploration and the progressive
+68 GI. Parisi, R. Kemker, .L. Part et al. / Neural Networks 113 (2019) 54-71
+
+acquisition of increasingly complex skills. Finally, multisensory
+integration (Section 4.5) is a key feature of autonomous agents
+operating in highly dynamic and noisy environment, leading to
+robust learning and behaviour also in situations of uncertainty.
+
+Acknowledgements
+
+This research was partially supported by the German Research
+Foundation (DFG) under project Transregio Crossmodal Learning
+(TRR 169).
+
+The authors would like to thank Sascha Griffiths, Vincenzo
+Lomonaco, Sebastian Risi, and Jun Tani for valuable feedback and
+suggestions.
+
+References
+
+Abbott, L. F., & Nelson, S. B. (2000). Synaptic plasticity: taming the beast. Nature
+Neuroscience, 3, 1178-1133.
+
+Abraham, W. C., & Robins, A.(2005). Memory retention and weight plasticity in ANN
+simulations. Trends in Neurosciences, 28(2), 73-78.
+
+Achille, A., Rovere, M., & Soatto, S. (2017). Critical Learning Periods in Deep Neural
+Networks, arXiv:1711.08856.
+
+Adams, R.A., Friston, K_J., & Bastos, A. M. (2015). Active inference, predictive coding
+and cortical architecture. In M. F. Casanova, & I. Opris (Eds.}, Recent advances on
+the modular organization of the cortex. Springer Netherlands.
+
+Aimone, J. B., Wiles, J., & Gage, F. H. (2006). Potential role for adult neurogenesis in
+the encoding of time in new memories. Nature Neuroscience, 9, 723-727.
+
+Aimone, J. B., Wiles, J, & Gage, F. H. (2009). Computational influence of adult
+neurogenesis on memory encoding.. Neuron, 61, 187-202.
+
+Altman, J. (1963). Autoradiographic investigation of cell proliferation in the brains
+of rats and cats. The Anatomical Record, 145(4), 573-591.
+
+Astrom, K.J., & Murray, R. M. (2010). Feedback systems: An introduction for scientists
+and engineers. Princeton University Press.
+
+Baldassarre, G., & Mirolli, M. (2013). Intrinsically motivated learning in natural and
+artificial systems. Springer-Verlag, Berlin.
+
+Baranes, A., & Oudeyer, P. ¥. (2013). Active learning of inverse models with intrin-
+sically motivated goal exploration in robots. Robotics and Autonomous Systems,
+61(1), 49-73.
+
+Barnett, S., & Ceci, S$. (2002). When and where do we apply what we learn? a
+taxonomy for far transfer. Psychological Bulletin, 128, 612-637.
+
+Barros, P., Parisi, G. I., Fu, D., Liu, X., & Wermter, S. (2017). Expectation learning for
+adaptive crossmodal stimuli association. In FUCog Meeting Proceedings. Zurich,
+Switzerland.
+
+Barto, A. (2013). Intrinsic motivation and reinforcement learning. In G. Baldassarre,
+& M. Mirolli(Eds.}, intrinsically motivated learning in natural and artificial systems
+(pp. 17-47). Springer.
+
+Bellemare, M., Srinivasan, S., Ostrovski, G., Schaul, T., Saxton, D., & Munos, R.
+(2016). Unifying count-based exploration and intrinsic motivation. In NIPS’16.
+Barcelona, Spain.
+
+Bengio, Y., Louradour, J., Collobert, R., & Weston, J. (2009). Curriculum learning. In
+ICML’0$ (pp. 41-48). Montreal, Canada.
+
+Benna, M. K., & Fusi, S. (2016). Computational principles of synaptic memory
+consolidation. Nature Neuroscience, 19(12), 1697-1708.
+
+Bienenstock, E., Cooper, L., & Munro, P. (1982). Theory for the development of
+neuron selectivity: orientation specificity and binocular interaction in visual
+cortex. The Journal of Neuroscience, 2, 32-48.
+
+Boldrini, M., Fulmore, C., Tartt, A. Simeon, L. & Pavlova, I. e. a. (2018). Human
+hippocampal neurogenesis persists throughout aging. Cell Stem Cell, 22(4),
+589-599.
+
+Bontempi, B., Laurent-Demir, C., Destrade, C., & Jaffard, R. (1999). Time-dependent
+reorganization of brain circuitry underlying long-term memory storage. Nature,
+400, 671-675.
+
+Braun, C., Heinz, U., Schweizer, R., Weich, K., Birbaumer, N., & Topka, H. (2001).
+Dynamic organization of the somato-sensory cortex induced by motor activity.
+Brain, 124, 2259-2267.
+
+Bremner, A., Lewkowicz, D., & Spence, C. (2012). Muttisensory development. Oxford
+University Press, Oxford, UK.
+
+Burgess, N., Shapiro, J. L, & Moore, M. A. (1991). Neural network models of list
+learning. Networks, 2, 399-422.
+
+Calvert, G., Spence, C., & Stein, B. (2004). The handbook of multisensory processes.
+Cambridge, MA: The MIT Press.
+
+Cameron, H. A., Woolley, C. S., McEwen, B. S., & Gould, E. (1993). Differentiation of
+newly born neurons and glia in the dentate gyrus of the adult rat. Neuroscience,
+56(2), 337-344.
+
+Cangelosi, A., & Schlesinger, M. (2015). Developmental robotics: From babies to robots.
+MIT Press.
+
+Chen, Y. C. & Spence, C. (2017). Assessing the role of the unity assumption on
+multisensory integration: a review. Frontiers in Psychology, 8(445).
+
+Cichon,J..& Gan, W.(2015). Branch-specific dendritic Ca(2+) spikes cause persistent
+synaptic plasticity. Nature, 520, 180-185.
+
+Coop, R., Mishtal, A., & Arel, 1. (2013). Ensemble learning in fixed expansion layer
+networks for mitigating catastrophic forgetting. IEEE Transactions on Neural
+Networks & Learning Systems, 24(10), 1623-1634.
+
+Cortes, C.,Gonzalvo, X., Kuznetsov, V., Mohri, M., & Yang, S. (2016). AdaNet: Adaptive
+structural learning of artificial neural networks, arXiv: 1607.01097.
+
+Dai, W., Yang, Q., Xue, G. R., & Yu, Y. (2007 ). Boosting for transfer learning. In ICML’17
+(pp. 193-200}. Sydney, Australia.
+
+Davis, G. W. {2006}. Homeostatic control of neural activity: from phenomenology
+to molecular design. Annual Review of Neuroscience, 29, 307-323.
+
+Deng, W., Aimone, J. B., & Gage, F. H. (2010). New neurons and new memories:
+how does adult hippocampal neurogenesis affect learning and memory?. Nature
+Reviews Neuroscience, 11(5), 339-350.
+
+Ditzler, G., Roveri, M., Alippi, C., & Polikar, R. (2015). Learning in nonstationary
+environments: A survey. IEEE Computational Intelligence Magazine, 10(4), 12-25.
+
+Donahue, J., Jia, ¥., Vinyals, O., Hoffman, J., Zhang, N., Tzeng, E., et al. (2014). Decaf: A
+deep convolutional activation feature for generic visual recognition. In ICML’/4.
+Beijing, China.
+
+Douglas, R. J., Koch, C., Mahowald, M., Martin, K. A, & Suarez, H. H. (1995). Recurrent
+excitation in neocortical circuits. Science, 269, 981-985.
+
+Doumas, L., Hummel, J., & Sandhofer, C. (2008). A theory of the discovery and
+predication of relational concepts. Psychological Review, 115, 1-43.
+
+Draelos, T.J., Miner, N. E., Lamb, C. C., Vineyard, C. M., Carlson, I. D., James, C. D., et
+al. (2017). Neurogenesis deep learning. In ]CNN’I7 (pp. 526-533}. Anchorage,
+Alaska.
+
+Elfaramawy, N., Barros, P., Parisi, G. 1, & Wermter, S. (2017). Emotion recognition
+from body expressions with a neural network architecture. In Proceedings of
+the international conference on human agent interaction (HAP'I7) (pp. 143-149).
+Bielefeld, Germany.
+
+Elman, J. L. (1993). Learning and development in neural networks: The importance
+of starting small. Cognition, 48(1), 71-99.
+
+Eriksson, P. S., Perfilieva, E, Bjork-Eriksson, T., Alborn, A. M., Nordborg, C., Peter-
+son, D. A, et al. (1998). Neurogenesis in the adult human hippocampus. Nature
+medicine, 4(11}, 1313-1317.
+
+Ernst, M. 0., & Biilthoff, H. (2004}. Merging the senses into a robust percept. Trends
+in Cognitive Sciences, 8(4}, 162-169.
+
+Fei-Fei, L., Fergus, R., & Perona, P. (2003). A Bayesian approach to unsupervised one-
+shot learning of object categories. In ICCV’03. Nice, France.
+
+Fernando, C., Banarse, D., Blundell, C., Zwols, Y., Ha, D., Rusu, A. A., et al. (2017).
+Pathnet: Evolution channels gradient descent in super neural networks, arXiv:
+1701.08734.
+
+Forestier, S., Mollard, Y., & Oudeyer, P. ¥. (2017). Intrinsically Motivated Goal
+Exploration Processes with Automatic Curriculum Learning, arXiv: 1708.02190.
+
+Forestier, S. & Oudeyer, P. Y. (2016). Curiosity-driven development of tool use
+precursors: a computational model. In Proceedings of the annual conference of
+the cognitive science society.
+
+French, R. M. (1997). Pseudo-recurrent connectionist networks: An approach to the
+sensitivity-stability dilemma. Connection Science, 9(4), 353-380.
+
+French, R. M. (1999). CaTastrophic forgetting in connectionist networks. Trends in
+Cognitive Sciences, 3(4), 128-135.
+
+Friston, K., Rigoli, F., Ognibene, D., Mathys, D., Fitzgerald, T., & Pezzulo, G. (2015).
+Active inference and epistemic value. Cognitive neuroscience, 6, 187-214.
+
+Fritzke, B. (1992). A growing neural gas network learns topologies. In NIPS’95, vol. 7
+(pp. 625-632}. Denver, CO.
+
+Fusi, S., Drew, P.J., & Abbott, L. F. (2005). CaScade models of synaptically stored
+memories. Neuron, 45(4), 599-611.
+
+Gage, F. H. (2006). Mammalian neural stem cells. Science, 287, 1433-1438.
+
+Gais, S., Albouy, G., Boly, M., Dang-Vu, T. T., Darsaud, A., Desseilles, M., et al. (2007).
+Sleep transforms the cerebral trace of declarative memories. Proceedings of the
+National Academy of Sciences, 104(47), 18778-18783.
+
+Gelbard-Sagiv, H., Mukamel, R., Harel, M., Malach, R., & Fried, I. (2008). Internally
+generated reactivation of single neurons in human hippocampus during free
+recall. Science, 322, 96-101.
+
+Gemmeke, J. F., Ellis, D. P. W., Freedman, D., Jansen, A., Lawrence, W., Moore, R.C., et
+al. (2017). Audio set: An ontology and human-labeled dataset for audio events.
+In ICASSP’17. New Orleans, LA.
+
+Gepperth, A., & Karaoguz, C. (2015). A bio-inspired incremental learning architec-
+ture for applied perceptual problems. Cognitive Computation, 8(5), 924-934.
+Goodfellow, I. J., Mirza, M., Xiao, D., Courville, A. & Bengio, Y. (2013). An empirical
+investigation of catastrophic forgetting in gradient-based neural networks,
+
+arXiv:1312.6211.
+
+Gopnik, A., Meltzoff, A. N., & Kuhl, P. K. (1999). The scientist in the crib: Minds, brains,
+and how children learn. William Morrow & Co.
+GI Parisi, R. Kemker, J.L. Part et al. / Neural Networks 113 (2019) 54-71 69
+
+Gorelick, L., Blank, M., Shechtman, E., Irani, M., & Basri, R. (2005). Actions as space-
+time shapes. In ICCV’05 (pp. 1395-1402). Beijing, China.
+
+Gottlieb, J., Qudeyer, P. Y., Lopes, M., & Baranes, A. (2013). Information seeking,
+curiosity and attention: Computational and neural mechanisms. Trends in Cog-
+nitive Science, 17(11), 585-596.
+
+Grant, W. S., Tanner, J., & Itti, L. (2017). Biologically plausible learning in neural
+networks with modulatory feedback. Neural Networks, 88, 32-48.
+
+Graves, A. Bellemare, M. G, Menick, J.. Munos, R., & Kavukcuoglu, K. (2017).
+Automated curriculum learning for neural networks, arXiv:1704.03003.
+
+Graves, A., Wayne, G., Reynolds, M., Harley, T., Danihelka, I, Grabska-Barwinska, A,
+et al. (2016). Hybrid computing using a neural network with dynamic external
+memory. Nature, 538, 471-476.
+
+Grossberg, S$. (1980). How does a brain build a cognitive code?. Psychology Review,
+87, 1-51.
+
+Grossberg, S. (2012). Adaptive resonance theory: how a brain learns to consciously
+attend, learn, and recognize a changing world. Neural Networks, 37, 1-41.
+
+Guo, Y., Liu, Y., Oerlemans, A. Lao, S., Wu, S., & Lew, M. (2016). Deep learning for
+visual understanding: A review. Neurocomputing, 187(8), 27-48.
+
+Hassabis, D., Kumaran, D., Summerfield, C., & Botvinick, M. (2017). Neuroscience-
+inspired artificial intelligence. Neuron Review, 95(2)}, 245-258.
+
+Hasson, U., Yang, E, Vallines, 1, Heeger, D. J. & Rubin, N. (2008). A hierarchy
+of temporal receptive windows in human cortex. The Journal of Neuroscience,
+28(10), 2539-2550.
+
+Hebb, D. (1949). The organization of behavior. John Wiley & Sons.
+
+Heeger, D.J. (2017). Theory of cortical function. Proceedings of the National Academy
+of Sciences of the United States of America, 114(8), 1773-1782.
+
+Hensch, T. (2004). Critical period regulation. Annual Review of Neuroscience, 27,
+549-579.
+
+Hensch, T. K., Fagiolini, M., Mataga, N., Stryker, M. P., Baekkeskov, S., & Kash, $. F.
+(1998). Local gaba circuit control of experience-dependent plasticity in devel-
+oping visual cortex. Science, 282, 1504-1508.
+
+Hertz, J., Krogh, A, & Palmer, R. G. (1991). Introduction to the theory of neural
+computation. Redwood City CA: Addison-Wesley.
+
+Hinton, G. E., & Plaut, D. C. (1987). Using fast weights to deblur old memories. In
+Proceedings of the annual conference of the cognitive science society (pp. 177-186).
+
+Hinton, G., Vinyals, O., & Dean, J. (2014). Distilling the knowledge in a neural
+network. In NIPS’14, workshop on deep learning and representation. Montreal,
+Canada.
+
+Hirsch, H., & Spinelli, D. (1970). Visual experience modifies distribution of horizon-
+tally and vertically oriented receptive fields in cats. Science, 168, 869-871.
+Holyoak, K., & Thagard, P. (1997). The analogical mind. American Psychologist, 52,
+
+35-44.
+
+Hubel, D. H., & Wiesel, T. H. (1962). Receptive fields, binocular and functional
+architecture in the cats visual cortex. Journal Physiology, 160, 106-154.
+
+Hubel, D.H., & Wiesel, T. H. (1967). Cortical and callosal connections concerned with
+the vertical meridian of visual fields in the cat. Journal of Neurophysiology, 30,
+1561-1573.
+
+Hubel, D. H., & Wiesel, T. H. (1970). The period of susceptibility to the psychological
+effects of unilateral eye closure in kittens. Journal Physiology, 206, 419-436.
+Hubel, D.H., Wiesel, T.H., & LeVay, S. (1977). Plasticity of ocular dominance columns
+inmonkey striate cortex. Philosophical Transactions of the Royal Society of London,
+
+Series B: Biological Sciences, 278, 377-409.
+
+Jung, H., Ju, J. Jung, M., & Kim, J. (2018). Less-forgetting learning in deep neural
+networks. AAAI’ 18, New Orleans, LA.
+
+Kamra, N., Gupta, U., & Liu, Y. (2018). Deep Generative Dual Memory Network for
+Continual Learning, arXiv: 1710.10368.
+
+Kemker, R, & Kanan, C. (2018). Fearnet: Brain-inspired model for incremental
+learning. In ICLR*/8. Vancouver, Canada.
+
+Kemker, R., McClure, M., Abitino, A. Hayes, T., & Kanan, C. (2018). Measuring
+catastrophic forgetting in neural networks. In AAAF'78. New Orleans, LA.
+
+Kirkpatrick, J. Pascanu, R., Rabinowitz, N., Veness, J. Desjardins, G., Rusu, A. A, et
+al. (2017). Overcoming catastrophic forgetting in neural networks. Proceedings
+of the National Academy of Sciences, 114(€13), 3521-3526.
+
+Kitamura, T., Ogawa, S. K., Roy, D. S., Okuyama, T., Morrissey, M. D., Smith, L. M., et
+al. (2017). Engrams and circuits crucial for systems consolidation of a memory.
+Science, 356, 73-78.
+
+Kiyota, T. (2017). Neurogenesis and brain repair (pp. 575-597). Neuroimmune Phar-
+macology. Springer.
+
+Knoblauch, A. (2017). Impact of structural plasticity on memory formation and
+decline. In A. van Ooyen, & M. Butz (Eds.)}, Rewiring the brain: A computational
+approach to structural plasticity in the adult brain (pp. 361-386). Elsevier, Aca-
+demic Press.
+
+Knoblauch, A., Korner, E., Krner, U.,& Sommer, F. T. (2014). Structural plasticity has
+high memory capacity and can explain graded amnesia, catastrophic forgetting,
+and the spacing effect. PLoS ONE, 9:e96485.
+
+Kohonen, T. (1982}. Self-organized formation of topologically correct feature maps.
+Biological Cybernetics, 43, 59-69.
+
+Kohonen, T. (1995). Self- organizing maps. New York: Springer.
+
+Krizhevsky, A. (2009). Learning multiple iayers of features from tiny images (Master's
+thesis), University of Toronto.
+
+Krueger, K. A., & Dayan, P. (2009). Flexible shaping: how learning in small steps
+helps. Cognition, 110, 380-394.
+
+Kulkarni, T., Narasimhan, K., Saeedi, A, & Tenenbaum, J. (2016). Hierarchical deep
+reinforcement learning: integrating temporal abstraction and intrinsic motiva-
+tion, arXiv:1604.06057.
+
+Kumaran, D., Hassabis, D., & McClelland, J. L. (2016). What learning systems do
+intelligent agents need? Complementary learning systems theory updated.
+Trends in Cognitive Sciences, 20(7}, 512-534.
+
+Kumaran, D., & McClelland, J. L. (2012). Generalization through the recurrent inter-
+action of episodic memories: a model of the hippocampal system. Psychological
+Review, 119, 573-616.
+
+Lambon Ralph, M., & Ehsan, S. (2006). Age of acquisition effects depend on the
+mapping between representations and the frequency of occurrence: empirical
+and computational evidence. Visual Cognition, 13(7-8), 928-948.
+
+Lampert, C., Nickisch, H., & Harmeling, S. (2009). Learning to detect unseen object
+classes by between-class attribute transfer. In CVPR'09. Miami Beach, Florida.
+
+LeCun, Y., Bengio, Y., & Hinton, G. (2015). Deep learning. Nature, 521, 436-444.
+
+LeCun, Y., Bottou, L., Bengio, Y., & Haffner, P.(1998}. Gradient-based learning applied
+to document recognition. In In Proceedings of the IEFE.
+
+Lenneberg, E. (1967). Biological foundations of language. New York: Wiley.
+
+Lewandowsky, S., & Li, S$. (1994). CaTastrophic interference in neural networks:
+Causes, solutions, and data. In F. N. Dempster, & C. Brainerd (Eds.), New per-
+spectives on interference and inhibition in cognition. Academic Press, New York.
+
+Lewkowicz, D. J. (2014). Early experience & multisensory perceptual narrowing.
+Developmental Psychobiology, 56(2), 292-315.
+
+Li, P., Farkas, 1, & McWhinney, B. (2004}. Early lexical development in a self-
+organising neural network. Neural Networks, 17, 1345-1362.
+
+Li, Z., & Hoiem, D. (2016). Learning without forgetting (pp. 614-629). ECCV'16,
+Amsterdam, The Netherlands.
+
+Lomonaco, V., & Maltoni, D. (2017). Core50: A new dataset and benchmark for
+continuous object recognition. In CoRE. Mountain View, CA.
+
+Lopez-Paz, D., & Ranzato, M. (2017). Gradient episodic memory for continual learn-
+ing. In NIPS’17. Long Beach, CA.
+
+Liiders, B., Schlager, M., & Risi, S. (2016). Continual learning through evolvable
+neural turing machines. In NIPS'16, workshop on continual learning and deep
+networks. Barcelona, Spain.
+
+Maltoni, D., & Lamonaco, V. {2018}. Continuous Learning in Single-Incremental-Task
+Scenarios., arXiv: 1806.08568.
+
+Marchman, V. A. (1993}. Constraints on plasticity ina connectionist model of english
+past tense. Journal of Cognitive Neuroscience, 5(2), 215-234.
+
+Mareschal, D., Johnson, M., Sirios, $., Spratling, M., Thomas, M., & Westermann, G.
+(2007). Neuroconstructivism: How the brain constructs cognition. Oxford: Oxford
+University Press.
+
+Marsland, S., Shapiro, J., & Nehmzow, U. (2002). A self-organising network that
+grows when required. Neural Networks, 15(8-9}, 1041-1658.
+
+Martinetz, T., Berkovich, S., & Schulten, K. (1993). Neural-gas network for vector
+quantization and its application to time-series prediction. JEFE Transactions on
+Neural Networks, 4(4}, 558-569.
+
+McClelland, J. L, McNaughton, B. L., & O'Reilly, RC. (1995). Why there are com-
+plementary learning systems in the hippocampus and neocortex: Insights from
+the successes and failures of connectionist models of learning and memory.
+Psychological Review, 102, 419-457.
+
+McCloskey, M., & Cohen, N. J. (1989). CaTastrophic interference in connectionist
+networks: The sequential learning problem. The Psychology of Learning & Mo-
+tivation, 24, 104-169.
+
+Mermillod, M., Bugaiska, A., & Bonin, P.(2013). The stability-plasticity dilemma: In-
+vestigating the continuum from Catastrophic forgetting to age-limited learning
+effects. Frontiers in Psychology, 4(504).
+
+Mici, L., Parisi, G. I., & Wermiter, S$. (2017). An Incremental Self-Organizing Architec-
+ture for Sensorimotor Learning and Prediction, arXiv:1712.08521.
+
+Mici, L., Parisi, G. L, & Wermter, S. (2018). A self-organizing neural network archi-
+tecture for learning human-object interactions. Neurocomputing, 307, 14-24.
+
+Miikkulainen, R. (1997). Dyslexic and category-specific aphasic impairments in
+a self-organizing feature map model of the lexicon. Brain & Language, 59,
+334-366.
+
+Miller, K., Keller, J., & Stryker, M. (1989). Occular dominance column development:
+Analysis and simulation. Science, 245, 605-615.
+
+Miller, K., & MacKay, D. J.(1994). The role of constraints in hebbian learning. Neural
+Computation, 6, 100-126.
+
+Ming, G. L., & Song, H. (2011). Adult neurogenesis in the mammalian brain: Signifi-
+cant answers and significant questions.. Neuron, 70, 687-702.
+
+Moon, $., Kim, S$. & Wang, H. (2015). Multimodal transfer deep learning with
+applications in audio-visual recognition. In NIPS’15. Montreal, Canada.
+
+Murray, M. M., Lewkowicz, D.J., Amedi, A., & Wallace, M. T. (2616). Multisensory
+processes: A balancing act across the lifespan. Trends in Neurosciences, 39,
+567-579.
+70 GI. Parisi, R. Kemker, .L. Part et al. / Neural Networks 113 (2019) 54-71
+
+Nadal, J. P., Toulouse, G., Changeux, J. P., & Dehaene, S. (1986). Networks of formal
+neurons and memory palimpsets. Europhysics Letters, 1, 535-543.
+
+Nelson, ¢. A. (2000). Neural plasticity and human development: The role of early
+experience in sculpting memory systems. Developmental Science, 3(2), 115-136.
+
+Netzer, Y., Wang, T., Coates, A., Bissacco, A., Wu, B., & Ng, A. Y. (2011). Reading digits
+in natural images with unsupervised feature learning. In NIPS’T1, Workshop on
+deep learning and unsupervised feature learning. Granada, Spain.
+
+O'Neill, J., Pleydell-Bouverie, B., Dupret, D., & Csicsvari, J. (2010). Play it again:
+Reactivation of waking experience and memory. Trends in Neuroscience, 33,
+220-229.
+
+O'Reilly, R. C. (2004). The division of labor berween the neocortex and hippocampus.
+connectionist modeling in cognitive (neuro-)science. George Houghton, Ed., Psy-
+chology Press.
+
+O'Reilly, R. C., & Norman, K. A.(2002). Hippocampal and neocortical contributions to
+memory: Advances in the complementary learning systems framework. Trends
+in Cagnitive Sciences, 6(12}, 505-510.
+
+O'Reilly, R. C, & Rudy, J. W. (2000). Computational principles of learning in the
+neocortex and hippocampus. Hippocampus, 10, 389-397.
+
+Oudeyer, P. ¥., Kaplan, F., & Hafner, V. (2007). Intrinsic motivation systems for au-
+tonomous mental development. IEEE Transactions on Evolutionary Computation,
+11(2), 265-286.
+
+Palatucci,M., Pomerleau, D.A., Hinton, G. E., & Mitchell, T.(2009). Zero-shot learning
+with semantic output codes. In NIPS’0S. Vancouver, Canada.
+
+Pallier, C., Dehaene, S., Poline, J. B., LeBihan, D., Argenti, A. M., Dupoux, E., et al.
+(2003). Brain imaging of language plasticity in adopted adults: can a second
+language replace a first?. Cerebral Cortex, 13, 155-161.
+
+Pan, S. J., & Yang, Q, (2010). A survey on transfer learning. IEEE Transactions on
+Knowledge and Data Engineering, 22(10), 1345-1359.
+
+Parisi, G., Barros, P., Fu, D., Mage, S., Wu, H., Liu, X., et al. (2018). A Neurorobotic Ex-
+periment for Crossmodal Conflict Resolution in Complex Environments, arXiv:
+1802.16408.
+
+Parisi, G.L., Barros, P., Kerzel, M., Wu, H, Yang, G., Li, Z., et al.(2017). A computational
+model of crossmodal processing for conflict resolution. In ICDL-EPIROB’17 (pp.
+33-38). Lisbon, Portugal.
+
+Parisi, G., Ji, X., & Wermter, S. (2018). On the role of neurogenesis in overcoming
+catastrophic forgetting.. In NIPS’18, workshop on continual learning. Montreal,
+Canada.
+
+Parisi, G. 1, Magg, S$, & Wermter, $. (2016). Human motion assessment in real
+time using recurrent self-organization. In Proceedings of the IEEE international
+symposium on robot and hurnan interactive communication (pp. 71-79). New
+York, NY.
+
+Parisi, G. I, Tani, J. Weber, C, & Wermter, S. (2017}. Lifelong learning of hu-
+mans actions with deep neural network self- organization. Neural Networks, 96,
+137-149.
+
+Parisi, G., Tani, J., Weber, C., & Wermter, S. (2018). Lifelong Learning of Spatiotem-
+poral Representations with Dual-Memory Recurrent Self-Organization, arXiv:
+1805.16966.
+
+Part, J.L., & Lemon, O. (2016). Incremental on-line learning of object classes using a
+combination of self-organizing incremental neural networks and deep convolu-
+tional neural networks. In [ROS’16, workshop on bio-inspired social robot learning
+in home scenarios. Daejeon, South Korea.
+
+Part, J. L, & Lemon, O. (2017}. Incremental online learning of objects for robots
+operating in real environments. In ICDI-EPIROB’17. Lisbon, Portugal.
+
+Pathak, D., Agrawal, P., Efros, A. A., & Darrell, F. (2017). Curiosity-driven exploration
+by self-supervised prediction. In JCML'17. Sydney, Australia.
+
+Polikar, R., Upda, L., Upda, S. S., & Honavar, V. (2001). Learn++: An incremental
+learning algorithm for supervised neural networks. JEEE Transactions on Systems,
+Man, and Cybernetics, Part C (Applications & Reviews), 31(4), 497-508.
+
+Power, J. D., & Schlaggar, B. L. (2016). Neural plasticity across the lifespan. Wiley
+Interdisciplinary Reviews: Developmental Biology, 6(216).
+
+Quadrato, G., Elnaggar, M. Y., & Di Giovanni, $. (2014). Adult neurogenesis in brain
+repair: Cellular plasticity vs. cellular replacement. Frontiers in Neuroscience,
+8(17).
+
+Rao, R. P. N., & Ballard, D. H. (1999). Predictive coding in the visual cortex: A
+functional interpretation of some extra-classical receptive-field effects. Nature
+Neuroscience, 2(1}, 79-87.
+
+Ratcliff, R. (1990). Connectionist models of recognition memory: Constraints
+imposed by learning and forgetting functions. Psychological Review, 97(2),
+285-308.
+
+Razavian, A. S., Azizpour, H., Sullivan, J., & Carlsson, S. (2014). CNN features off-the-
+shelf: An astounding baseline for recognition (pp. 806-8 13). CVPR'14, Columbus,
+OH.
+
+Rebuffi, S. A., Kolesnikov, A. Sperl, G., & Lampert, C. H. (2016). iCaRL: Incremental
+Classifier and Representation Learning, arXiv: 1611.07725.
+
+Reed, S., & de Freitas, N. (2015 }. Neural programmer interpreters, arXiv: 1511.06279.
+
+Ren, B., Wang, H., Li, J., & Gao, H. (2017). Life-long learning based on dynamic
+combination model. Applied Soft Computing, 56, 398-404.
+
+Richardson, F. M., & Thomas, M. S$. C. (2008). Critical periods and catastrophic
+interference effects in the development of self-organising feature maps. Devel-
+opmental Science, 113}, 371-389.
+
+Ring, M. B. (1997). Child: A first step towards continual learning. Machine Learning,
+28, 77-104.
+
+Robins, A. V. (1993}. CaTastrophic forgetting in neural networks: The role of re-
+hearsal mechanisms. In Proceedings of the first new zealand international two-
+stream conference on artificial neural networks and expert systems. IEEE Computer
+Society Press.
+
+Robins, A. V. (1995). CaTastrophic forgetting, rehearsal and pseudorehearsal. Con-
+nection Science, 7(2), 123-146.
+
+Rusu, A. A, Rabinowitz, N. C., Desjardins, G., Soyer, H., Kirkpatrick, J.,
+Kavukcuoglu, K., et al. (2016). Progressive Neural Networks, arXiv: 1606_04671.
+
+Rusu, A. A., Vecerik, M., Rothdrl, T., Heess, N., Pascanu, R., & Hadsell, R. (2017). Sim-
+to-real robot learning from pixels with progressive nets. In CoRL’?7. Mountain
+View, CA.
+
+Sanger, T. D. (1994). Neural network learning control of robot manipulators using
+gradually increasing task difficulty. IEEE Transactions on Robotics and Automa-
+tion, 10.
+
+Schmidhuber, J. (1991). Curious model-building control systems.
+
+Schuldt, C., Laptey, L, & Caputo, B. (2004). Recognizing human actions: A local SVM
+approach. In ICPR’04 (pp. 32-36). Cambridge, UK.
+
+Seidenberg, M., & Zevin, J.(2006). Connectionist models in developmental cognitive
+neuroscience: Critical periods and the paradox of success. In Y. Munakata, &
+M. H. Johnson (Eds.), Processes of change in brain and cognitive development:
+Attention and Performance XX] (pp. 315-347). Oxford: Oxford University Press.
+
+Senghas, A., Kita, S$. & Ozytirek, A. (2004). Children creating core properties of
+language: Evidence from an emerging sign language in nicaragua. Science, 305,
+1779-1782.
+
+Shatz, C. J. (1996). Emergence of order in visual system development. Proceedings of
+the National Academy of Sciences, 93, 602-608.
+
+Shin, H., Lee, J. K., Kirn, J., & Kirn, J. (2017}. Continual learning with deep generative
+replay. In NIPS’T7. Long Beach, CA.
+
+Skinner, B. F. (1958). Reinforcement today. American Psychologist, 13, 94-99.
+
+Soltoggio, A. (2015). Short-term plasticity as cause-effect hypothesis testing is distal
+reward learning. Biological Cybernetics, 109, 75-94.
+
+Soltoggio, A., Stanley, K. O., & Risi, S.(2017}. Born to learn: the inspiration, progress,
+and future of evolved plastic artificial neural networks, arXiv:1703.10371.
+Song, S., Miller, K. D., & Abbott, L. F. (2000). Competitive hebbian learning through
+
+spike-timing-dependent synaptic plasticity. Nature Neuroscience, 3, 919-926.
+
+Sorrells, S. F., Paredes, M. F., Arantxa, C. S., Sandoval, I, Dashi, Q., Kelley, K. W.,
+et al. (2018). Human hippocampal neurogenesis drops sharply in children to
+undetectable levels in adults. Nature, 555, 377-381.
+
+Spence, C. (2010}. Crossmodal spatial attention. Annals of the New York Academy of
+Sciences, 1191, 182-200.
+
+Spence, C. (2014). Orienting attention: A crossmodal perspective. In The Oxford
+handbook of attention (pp. 446-471). Oxford, UK: Oxford University Press.
+
+Stein, B. E, & Meredith, M. A. (1993). The merging of the senses. The MIT Press,
+Cambridge, MA, US.
+
+Stein, B. E., Stanford, T. R, & Rowland, B. A. (2014). Development of multisensory
+integration from the perspective of the individual neuron. Nature Reviews
+Neuroscience, 15(8), 520-535.
+
+Sur, M., & Leamey, C. A. (2001). Development and plasticity of cortical areas and
+networks. Nature Reviews Neuroscience, 2, 251-262.
+
+Tani, J. (2016}. Exploring rebetic minds: Actions, Symbols, and consciousness a self-
+organizing dynamic phenomena. Oxford University Press.
+
+Tanneberg, D., Peters, J.,& Rueckert, E.(2017). Online learning with stochastic recur-
+rent neural networks using intrinsic motivation signals. In CoRL’1?7. Mountain
+View, CA.
+
+Taupin, P., & Gage, F. H. (2002). Adult neurogenesis and neural stem cells of the
+central nervous system in mammals. Journal of Neuroscience Research, 69(6),
+745-749.
+
+Taylor, P., Hobbs, J. N., Burroni, J.. & Siegelmann, H. T. (2015). The global landscape
+of cognition: hierarchical aggregation as an organizational principle of human
+cortical networks and functions. Scientific Reports, 5(18112).
+
+Tessler, C., Givony, S., Zahavy, T., Mankowitz, D. J. & Mannor, S. (2017). A deep
+hierarchical approach to lifelong learning in minecraft. In AAAI’I7. San Francisco,
+CA.
+
+Thomas, M., & Johnson, M. (2006). The computational modelling of sensitive peri-
+ods. Developmental Psychobiology, 48(4}, 337-344.
+
+Thrun, S., & Mitchell, T. (1995). Lifelong robot learning. Robotics and Autonomous
+Systems, 15, 25-46.
+
+Tse, D., Takeuchi, T., Kakeyama, M., Kajii, ¥., Okuno, H., Tohyama, C., et al. (2011).
+Schema-dependent gene activation and memory encoding in neocortex. Sci-
+ence, 333, 891-895.
+
+Turrigiano, G. (2011). Too many cooks? Intrinsic and synaptic homeostatic mecha-
+nisms in cortical circuit refinement. Annual Review of Neuroscience, 34, 89-103.
+GI Parisi, R. Kemker, J.L. Part et al. / Neural Networks 113 (2019) 54-71 71
+
+Uylings, H. (2006). Development of the human cortex and the concept of critical or
+sensitive periods. Language Learning, 56, 59-90.
+
+Vinyals, O., Blundell, C., Lillicrap, T., & Wierstra, D. (2016). Matching networks for
+one shot learning. In NIPS’16. Barcelona, Spain.
+
+Wah, C., Branson, S., Welinder, P., Perona, P., & Belongie, S. (2011}. CaLtech-UCSD
+birds-200-2011 dataset. In Tech Report: CNS-TR-2011-007.
+
+Weiss, K, Khoshgoftaar, T. M., & Wang, D. D. (2016). A survey of transfer learning.
+Journal of Big Data, 3(9}.
+
+Wermiter, S., Palm, G., & Elshaw, M. (2005). Biomimetic neural learning for intelligent
+robots. Intelligent Systems, Cognitive Robotics, and Neuroscience. Springer,
+Berlin, Heidelberg.
+
+Willshaw, D_J., & von der Malsburg, C. (1976). How patterned neural connections
+can be set up by self-organization. Proceedings of the Royal Society of London B:
+Biological Sciences, 194(1117), 431-445.
+
+Xiao, T., Zhang, J., Yang, K., Peng, Y., & Zhang, Z. (2014). Error-driven incremental
+learning in deep convolutional neural network for large-scale image classifica-
+tion. In Proceedings of the ACM International Conference on Multimedia, Orlando,
+FL (pp. 177-186).
+
+Yoon, J., Yang, E., Lee, J., & Hwang, S. J. (2018). Lifelong learning with dynamically
+expandable networks. In [CLR’18. Vancouver, Canada.
+
+Zenke, F., Gerstner, W., & Ganguli, $. (2017). The temporal paradox of hebbian
+learning and homeostatic plasticity. Neurobiology, 43, 166-176.
+
+Zenke, F., Poole, B., & Ganguli, S. (2017). Continual learning through synaptic intelli-
+gence. ICML'17, Sydney, Australia.
+
+Zhou, G., Sohn, K, & Lee, H. (2012). Online incremental feature learning with
+denoising autoencoders. In International conference on artificial intelligence and
+statistics (pp. 1453-1461}.
+

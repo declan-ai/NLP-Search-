@@ -1,0 +1,92 @@
+Neocognitron: A self-organizing neural network model for a mechanism of pattern recognition unaffected by shift in position
+Kunihiko Fukushima 
+Biological Cybernetics volume 36, pages193–202(1980)Cite this article
+
+5467 Accesses
+
+1792 Citations
+
+33 Altmetric
+
+Metricsdetails
+
+Abstract
+A neural network model for a mechanism of visual pattern recognition is proposed in this paper. The network is self-organized by “learning without a teacher”, and acquires an ability to recognize stimulus patterns based on the geometrical similarity (Gestalt) of their shapes without affected by their positions. This network is given a nickname “neocognitron”. After completion of self-organization, the network has a structure similar to the hierarchy model of the visual nervous system proposed by Hubel and Wiesel. The network consits of an input layer (photoreceptor array) followed by a cascade connection of a number of modular structures, each of which is composed of two layers of cells connected in a cascade. The first layer of each module consists of “S-cells”, which show characteristics similar to simple cells or lower order hypercomplex cells, and the second layer consists of “C-cells” similar to complex cells or higher order hypercomplex cells. The afferent synapses to each S-cell have plasticity and are modifiable. The network has an ability of unsupervised learning: We do not need any “teacher” during the process of self-organization, and it is only needed to present a set of stimulus patterns repeatedly to the input layer of the network. The network has been simulated on a digital computer. After repetitive presentation of a set of stimulus patterns, each stimulus pattern has become to elicit an output only from one of the C-cell of the last layer, and conversely, this C-cell has become selectively responsive only to that stimulus pattern. That is, none of the C-cells of the last layer responds to more than one stimulus pattern. The response of the C-cells of the last layer is not affected by the pattern's position at all. Neither is it affected by a small change in shape nor in size of the stimulus pattern.
+
+This is a preview of subscription content, log in to check access.
+
+References
+Fukushima, K.: Cognitron: a self-organizing multilayered neural network. Biol. Cybernetics 20, 121–136 (1975)
+
+Google Scholar
+ 
+
+Fukushima, K.: Improvement in pattern-selectivity of a cognitron (in Japanese). Pap. Tech. Group MBE78-27, IECE Japan (1978)
+
+Google Scholar
+ 
+
+Fukushima, K.: Self-organization of a neural network which gives position-invariant response (in Japanese). Pap. Tech. Group MBE 78-109, IECE Japan (1979a)
+
+Google Scholar
+ 
+
+Fukushima, K.: Self-organization of a neural network which gives position-invariant response. In: Proceedings of the Sixth International Joint Conference on Artificial Intelligence. Tokyo, August 20–23, 1979, pp. 291–293 (1979b)
+
+Fukushima, K.: Improvement in pattern-selectivity of a cognitron (in Japanese). Trans. IECE Japan (A), J 62-A, 650–657 (1979c)
+
+Google Scholar
+ 
+
+Giebel, H.: Feature extraction and recognition of handwritten characters by homogeneous layers. In: Pattern recognition in biological and technical systems. Grüsser, O.-J., Klinke, R. (eds.), pp. 162–169. Berlin, Heidelberg, New York: Springer 1971
+
+Google Scholar
+ 
+
+Gross, C.G., Rocha-Miranda, C.E., Bender, D.B.: Visual properties of neurons in inferotemporal cortex of the macaque. J. Neurophysiol. 35, 96–111 (1972)
+
+Google Scholar
+ 
+
+Hubel, D.H., Wiesel, T.N.: Receptive fields, binocular interaction and functional architecture in cat's visual cortex. J. Physiol. (London) 160, 106–154 (1962)
+
+Google Scholar
+ 
+
+Hubei, D.H., Wiesel, T.N.: Receptive fields and functional architecture in two nonstriate visual area (18 and 19) of the cat. J. Neurophysiol. 28, 229–289 (1965)
+
+Google Scholar
+ 
+
+Hubel, D.H., Wiesel, T.N.: Functional architecture of macaque monkey visual cortex. Proc. R. Soc. London, Ser. B 198, 1–59 (1977)
+
+Google Scholar
+ 
+
+Kabrisky, M.: A proposed model for visual information processing in the human brain. Urbana, London: Univ. of Illinois Press 1966
+
+Google Scholar
+ 
+
+Meyer, R.L., Sperry, R.W.: Explanatory models for neuroplasticity in retinotectral connections. In: Plasticity and function in the central nervous system. Stein, D.G., Rosen, J.J., Butters, N. (eds.), pp. 45–63. New York, San Francisco, London: Academic Press 1974
+
+Google Scholar
+ 
+
+Rosenblatt, F.: Principles of neurodynamics. Washington, D.C.: Spartan Books 1962
+
+Google Scholar
+ 
+
+Sato, T., Kawamura, T., Iwai, E.: Responsiveness of neurons to visual patterns in inferotemporal cortex of behaving monkeys. J. Physiol. Soc. Jpn. 40, 285–286 (1978)
+
+Google Scholar
+ 
+
+Download references
+
+Author information
+Affiliations
+NHK Broadcasting Science Research Laboratories, Kinuta, Setagaya, Tokyo, Japan
+
+Kunihiko Fukushima

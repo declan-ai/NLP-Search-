@@ -1,0 +1,49 @@
+Three People Who Were Supposedly Bitcoin Founder Satoshi Nakamoto
+FACEBOOK
+TWITTER
+LINKEDIN
+By RAKESH SHARMA
+ Updated Jun 25, 2019
+One of the most enduring mysteries of bitcoin is the identity of its founder, Satoshi Nakamoto. Little is known about him. His last communication was in April 2011, two years after the network came into existence.1?
+
+
+Nakamoto is important to the bitcoin ecosystem beyond his status as a founder. He is a philosophical figurehead of sorts, and frequently invoked among cryptocurrency proponents debating the future of bitcoin's development. For example, both sides in the contentious forking of Bitcoin Cash (itself a fork of the original bitcoin blockchain) claimed to uphold Nakamoto’s original vision for the currency.2? Bitcoin wallets associated with Nakamoto hold 980,000 bitcoin (about $6.2 billion as of March 2020).3? Given that just 21 million Bitcoin will ever be mined,4? Nakamoto’s holdings have the potential to significantly affect its price, if and when they are traded.
+
+
+Despite numerous efforts to uncover his identity, Nakamoto has proven elusive. Several individuals have been proposed but none have been proven to be Satoshi Nakamoto beyond a doubt. Here are three candidates.
+
+
+Dorian Nakamoto 
+This perhaps was the most high-profile attempt to reveal bitcoin’s founder. Newsweek in a March 2014 identified Dorian Nakamoto as the currency's creator.5? Publication of the article caused a hullabaloo in the crypto and wider tech community, as this was the first time a mainstream publication had attempted to learn the identity of bitcoin’s creator.
+
+
+Newsweek claimed several similarities between Satoshi Nakamoto and Dorian Nakamoto. For example, both supposedly held libertarian leanings and a Japanese connection. (Dorian, who graduated in physics from California Polytechnic and worked on classified defense projects, is Japanese-American). The article’s author also claimed Nakamoto said he was “no longer” involved with bitcoin and that he had “turned it over” to other people.5? 
+
+Dorian Nakamoto later denied the quote and claimed that he had misunderstood the question. He told the Associated Press, "I got nothing to do with it."6?
+
+
+The magazine’s biggest mistake was to publish a photograph of Nakamoto’s home. A cursory image search could easily reveal its location. While many did not believe Dorian Nakamoto was bitcoin’s founder, the crypto community was aghast his privacy had been violated.
+
+
+Still, the media circus was not without profit for Dorian Nakamoto. An online campaign raised more than 100 bitcoins on his behalf.7? 8? The fund was the bitcoin community’s way of saying “thanks.” In April 2014, Dorian Nakamoto appeared in a YouTube video along with fundraiser Andreas Antonopoulos to thank the bitcoin community for their support.9?
+
+Craig Wright 
+For the most part, individuals suspected of being Satoshi Nakamoto have denied the claim or remained silent. That has not been the case with Craig Wright, an Australian scientist. (See also: Has The Bitcoin Creator Been Found?)
+
+
+In December 2015, Wired Magazine wrote a profile on Wright, claiming it had "obtained the strongest evidence yet of Satoshi Nakamoto’s true identity.” The article reported on Wright's appearance via Skype at that year's Bitcoin Investor’s Conference in Las Vegas. When asked about his credentials, Wright claimed he was “a bit of everything.” He listed his degrees, including a master’s in statistics and two doctorates. He also said: "I've been involved with all of this for a long time ... I try and keep my head down."10?
+
+Wired's evidence consisted of references to a "cryptocurrency paper" on Wright's blog that appeared months before the bitcoin whitepaper began to circulate. In addition, there were leaked emails and correspondence with Wright’s lawyer that referenced a “P2P distributed ledger." Furthermore, leaked transcripts of meetings with attorneys and tax officials quoted him as saying: “I did my best to try and hide the fact that I’ve been running bitcoin since 2009. By the end of this, I think half the world is going to bloody know.”10?
+
+Those claims were soon thrown into doubt. Wired followed up its report to note several inconsistencies in Wright's story. For example, the blog entries appeared to be backdated.11? Evidence also suggested that public encryption keys linked to Satoshi Nakamoto were also backdated.12? Even Ethereum co-founder Vitalik Buterin, who is otherwise reticent about politics in the cryptocurrency world, came out against Wright, publicly calling him a fraud.13?
+
+But Wright remains unfazed by the criticism and has parlayed the media attention to carve out a prominent role within the crypto community. He led a contentious fork of Bitcoin Cash, forming Bitcoin SV.14? He is also chief science officer at nChain, a blockchain solutions business that serves enterprise customers.15?
+
+Nick Szabo 
+Nick Szabo is a computer engineer and legal scholar. He is credited with pioneering the concept of smart contracts in a 1996 paper.16? In 2008, he conceptualized a decentralized currency he called Bit Gold, a precursor to bitcoin. He described Bit Gold as “a protocol whereby unforgeable costly bits could be created online with minimal dependence on trusted third parties.”17? This is similar to the bitcoin concept, whereby a series of bits created by a network of computers without a leader verify and validate transactions.
+
+Author Dominic Frisby attempts to make the case that Nick Szabo is Satoshi Nakamoto in his book, Bitcoin: The Future of Money? Frisby consulted a stylometrics expert who concluded that Szabo’s writing style was similar to known writings from Satoshi.18? Another clue is that both Szabo and Satoshi reference economist Carl Menger. In addition, Frisby learned Szabo had worked for DigiCash, an early attempt to bring cryptography to digital payments.19? In the author's eyes, this strongly suggested Nick Szabo is Satoshi Nakamoto.
+
+
+Compete Risk Free with $100,000 in Virtual Cash
+Put your trading skills to the test with our FREE Stock Simulator. Compete with thousands of Investopedia traders and trade your way to the top! Submit trades in a virtual environment before you start risking your own money. Practice trading strategies so that when you're ready to enter the real market, you've had the practice you need. Try our Stock Simulator today >>

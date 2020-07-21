@@ -1,0 +1,17 @@
+Surely it's more complicated?
+Yes - but as a concept, not much more. Complexities come in the implementation and the journey to realise value from such implementations. The above example will, of course, be overly simplistic for some – but may be a starting point for others.
+
+In a traditional environment, trusted third parties act as intermediaries for financial transactions. If you have ever sent money overseas, it will pass through an intermediary (usually a bank). It will usually not be instantaneous (taking up to 3 days) and the intermediary will take a commission for doing this either in the form of exchange rate conversion or other charges.
+
+The original Blockchain is open-source technology which offers an alternative to the traditional intermediary for transfers of the crypto-currency Bitcoin. The intermediary is replaced by the collective verification of the ecosystem offering a huge degree of traceability, security and speed.
+
+In the example above (a "public Blockchain"), there are multiple versions of you as “nodes” on a network acting as executors of transactions and miners simultaneously. Transactions are collected into blocks before being added to the Blockchain. Miners receive a Bitcoin reward based upon the computational time it takes to work out a) whether the transaction is valid and b) what is the correct mathematical key to link to the block of transactions into the correct place in the open ledger. As more transactions are executed, more Bitcoins flow into the virtual money supply. The "reward" miners get will reduces every 4 years until Bitcoin production will eventually cease (although estimates say this won't be until 2140!). Of course, although the original Blockchain was intended to manage Bitcoin, other virtual currencies, such as Ether, can be used.
+
+Here's Meg Alderman explaining Blockchain in 2 minutes
+
+Why do I need to know about Blockchain?
+There are three reasons why you need to know about Blockchain:
+
+Blockchain technology doesn't have to exist publicly. It can also exist privately - where nodes are simply points in a private network and the Blockchain acts similarly to a distributed ledger. Financial institutions specifically are under tremendous pressure to demonstrate regulatory compliance and many are now moving ahead with Blockchain implementations. Secure solutions like Blockchain can be a crucial building block to reduce compliance costs.
+Block-chain technology is broader than finance. It can be applied to any multi-step transaction where traceability and visibility is required. Supply chain is a notable use case where Blockchain can be leveraged to manage and sign contracts and audit product provenance. It could also be leveraged for votation platforms, titles and deed management - amongst myriad other uses. As the digital and physical worlds converge, the practical applications of Blockchain will only grow.
+The exponential and disruptive growth of Blockchain will come from the convergence of public and private Blockchains to an ecosystem where firms, customers and suppliers can collaborate in a secure, auditable and virtual way.
